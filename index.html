@@ -29,12 +29,13 @@
             color: var(--text-main);
             min-height: 100vh;
             padding-bottom: 3rem;
+            -webkit-text-size-adjust: 100%;
         }
 
         header {
             background-color: var(--primary);
             color: white;
-            padding: 1rem;
+            padding: 0.875rem 1rem;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             position: sticky;
             top: 0;
@@ -55,7 +56,7 @@
         }
 
         header h1 {
-            font-size: 1.25rem;
+            font-size: 1.15rem;
             font-weight: 700;
         }
 
@@ -86,27 +87,37 @@
 
         main {
             max-width: 1100px;
-            margin: 1.5rem auto;
+            margin: 1rem auto;
             padding: 0 1rem;
             display: grid;
             grid-template-columns: 1fr;
-            gap: 1.5rem;
+            gap: 1rem;
         }
 
         @media (min-width: 768px) {
             main.grid-layout {
                 grid-template-columns: 1fr 1fr;
                 align-items: start;
+                gap: 1.5rem;
+            }
+            main {
+                margin: 1.5rem auto;
             }
         }
 
         .card {
             background-color: var(--card-bg);
-            padding: 1.5rem;
+            padding: 1.25rem;
             border-radius: 0.75rem;
             box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
             border: 1px solid var(--border-color);
             margin-bottom: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .card {
+                padding: 1.5rem;
+            }
         }
 
         .card h2 {
@@ -136,7 +147,7 @@
             background-color: #f8fafc;
             border: 1px solid var(--border-color);
             border-radius: 0.5rem;
-            font-size: 0.875rem;
+            font-size: 16px; /* Evita zoom automático no iOS */
             color: var(--text-main);
             outline: none;
             transition: border-color 0.2s, box-shadow 0.2s;
@@ -179,10 +190,10 @@
         }
 
         .btn-success {
-            flex: 1;
             background-color: var(--success);
             color: white;
             padding: 0.75rem;
+            width: 100%;
         }
 
         .btn-success:hover {
@@ -209,22 +220,29 @@
             justify-content: space-between;
         }
 
+        /* Organização de botões responsiva para celular e PC */
         .action-buttons-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr auto;
+            display: flex;
+            flex-direction: column;
             gap: 0.5rem;
             margin-top: 1rem;
-            align-items: center;
         }
 
-        .action-buttons-grid button {
-            margin: 0;
-            height: 42px;
-            white-space: nowrap;
+        @media (min-width: 480px) {
+            .action-buttons-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr auto;
+                align-items: center;
+            }
+            .action-buttons-grid button {
+                margin: 0;
+                height: 42px;
+                white-space: nowrap;
+            }
         }
 
         .list-container {
-            max-height: 380px;
+            max-height: 320px;
             overflow-y: auto;
             padding-right: 0.25rem;
         }
@@ -238,6 +256,7 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 0.5rem;
+            gap: 0.5rem;
         }
 
         .item-info p.nome {
@@ -262,15 +281,17 @@
         .item-info p.ref {
             font-size: 0.75rem;
             color: var(--text-muted);
+            word-break: break-word;
         }
 
         .item-actions {
             display: flex;
             gap: 0.25rem;
+            flex-shrink: 0;
         }
 
         .action-btn {
-            padding: 0.35rem 0.5rem;
+            padding: 0.4rem 0.5rem;
             background: white;
             border: 1px solid var(--border-color);
             border-radius: 0.375rem;
@@ -306,13 +327,21 @@
         
         .historico-card {
             background-color: #f8fafc;
-            padding: 1rem;
+            padding: 0.875rem;
             border-radius: 0.5rem;
             border: 1px solid var(--border-color);
             margin-bottom: 0.75rem;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        @media (min-width: 480px) {
+            .historico-card {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
         }
 
         .modal-overlay {
@@ -326,13 +355,14 @@
             justify-content: center;
             align-items: center;
             z-index: 100;
+            padding: 1rem;
         }
 
         .modal-content {
             background-color: white;
-            padding: 2rem;
+            padding: 1.5rem;
             border-radius: 0.75rem;
-            width: 90%;
+            width: 100%;
             max-width: 600px;
             max-height: 85vh;
             overflow-y: auto;
@@ -348,13 +378,13 @@
             <div class="brand-box">
                 <h1>Free Fácil</h1>
             </div>
-            <span id="restaurante-ativo-label" style="font-size: 0.85rem; font-weight: 600; background-color: rgba(255,255,255,0.2); padding: 0.25rem 0.5rem; border-radius: 0.375rem;">Carlos Gomes</span>
+            <span id="restaurante-ativo-label" style="font-size: 0.75rem; font-weight: 600; background-color: rgba(255,255,255,0.2); padding: 0.25rem 0.5rem; border-radius: 0.375rem;">Carlos Gomes</span>
         </div>
     </header>
 
     <!-- Navegação por Abas -->
-    <div class="nav-abas">
-        <button id="btn-aba-lancar" class="tab-btn active" onclick="mudarAba('lancar')">Lançamento de Frees</button>
+    <div class="nav-abas" style="max-width: 1100px; margin: 1rem auto 0 auto; padding: 0 1rem;">
+        <button id="btn-aba-lancar" class="tab-btn active" onclick="mudarAba('lancar')">Lançamento</button>
         <button id="btn-aba-historico" class="tab-btn" onclick="mudarAba('historico')">Histórico / Recibos</button>
     </div>
 
@@ -444,7 +474,7 @@
 
                 <div class="action-buttons-grid">
                     <button onclick="gerarTexto()" class="btn-success">GERAR TEXTO</button>
-                    <button onclick="salvarReciboDia()" class="btn-primary" style="background-color: var(--success);">💾 SALVAR RECIBO</button>
+                    <button onclick="salvarReciboDia()" class="btn-primary" style="background-color: var(--success); margin: 0;">💾 SALVAR RECIBO</button>
                     <button onclick="limparTudo()" class="btn-danger-light">Limpar</button>
                 </div>
             </section>
@@ -462,9 +492,9 @@
     <!-- CONTEÚDO: ABA HISTÓRICO -->
     <main id="conteudo-historico" class="hidden">
         <section class="card">
-            <h2>Histórico de Recibos Salvos por Restaurante</h2>
+            <h2>Histórico de Recibos Salvos</h2>
             
-            <div class="form-group" style="max-width: 300px; margin-bottom: 1.5rem;">
+            <div class="form-group" style="max-width: 100%; margin-bottom: 1.5rem;">
                 <label>Filtrar por Restaurante</label>
                 <select id="filtro-restaurante-historico" onchange="atualizarHistoricoTela()">
                     <option value="Carlos Gomes">Carlos Gomes</option>
@@ -475,7 +505,7 @@
                 </select>
             </div>
 
-            <div id="lista-historico" class="list-container" style="max-height: 550px;">
+            <div id="lista-historico" class="list-container" style="max-height: 500px;">
                 <!-- Histórico dinâmico -->
             </div>
         </section>
@@ -486,19 +516,19 @@
         <div class="modal-content">
             <div class="flex-row justify-between" style="border-bottom: 2px solid var(--border-color); padding-bottom: 0.75rem; margin-bottom: 1rem;">
                 <div>
-                    <h2 id="modal-titulo" style="margin: 0; color: var(--primary);">Recibo de Frees</h2>
-                    <span id="modal-subtitulo" style="font-size: 0.8rem; color: var(--text-muted);">Restaurante e Data</span>
+                    <h2 id="modal-titulo" style="margin: 0; color: var(--primary); font-size: 1.1rem;">Recibo de Frees</h2>
+                    <span id="modal-subtitulo" style="font-size: 0.75rem; color: var(--text-muted);">Restaurante e Data</span>
                 </div>
-                <button onclick="fecharModalRecibo()" class="action-btn delete" style="padding: 0.5rem 0.75rem;">✕ Fechar</button>
+                <button onclick="fecharModalRecibo()" class="action-btn delete" style="padding: 0.4rem 0.6rem;">✕ Fechar</button>
             </div>
 
-            <div id="modal-corpo-itens" style="max-height: 350px; overflow-y: auto; margin-bottom: 1rem;">
+            <div id="modal-corpo-itens" style="max-height: 300px; overflow-y: auto; margin-bottom: 1rem;">
                 <!-- Itens injetados via JS -->
             </div>
 
             <div style="border-top: 2px solid var(--border-color); padding-top: 0.75rem; display: flex; justify-content: space-between; align-items: center;">
-                <span style="font-weight: 600; color: var(--text-muted);">TOTAL GERAL DO RECIBO:</span>
-                <span id="modal-total-geral" class="text-total" style="font-size: 1.25rem;">R$ 0,00</span>
+                <span style="font-weight: 600; color: var(--text-muted); font-size: 0.85rem;">TOTAL GERAL:</span>
+                <span id="modal-total-geral" class="text-total" style="font-size: 1.1rem;">R$ 0,00</span>
             </div>
         </div>
     </div>
@@ -534,22 +564,22 @@
         }
 
         function carregarDados() {
-            const dados = localStorage.getItem('frees_app_lancamentos_v7');
+            const dados = localStorage.getItem('frees_app_lancamentos_v8');
             return dados ? JSON.parse(dados) : {};
         }
 
         function salvarDados(dados) {
-            localStorage.setItem('frees_app_lancamentos_v7', JSON.stringify(dados));
+            localStorage.setItem('frees_app_lancamentos_v8', JSON.stringify(dados));
             atualizarTela();
         }
 
         function carregarRecibos() {
-            const dados = localStorage.getItem('frees_app_recibos_v7');
+            const dados = localStorage.getItem('frees_app_recibos_v8');
             return dados ? JSON.parse(dados) : {};
         }
 
         function salvarRecibosStorage(dados) {
-            localStorage.setItem('frees_app_recibos_v7', JSON.stringify(dados));
+            localStorage.setItem('frees_app_recibos_v8', JSON.stringify(dados));
         }
 
         function alternarCamposHorario() {
@@ -673,11 +703,6 @@
             });
 
             document.getElementById('total-geral').innerText = `Total: R$ ${totalGeral.toFixed(2).replace('.', ',')}`;
-            
-            const partes = data.split('-');
-            if(partes.length === 3) {
-                document.getElementById('data-atual-label').innerText = `${partes[2]}/${partes[1]}/${partes[0]}`;
-            }
         }
 
         function salvarReciboDia() {
@@ -727,12 +752,12 @@
                 div.className = "historico-card";
                 div.innerHTML = `
                     <div>
-                        <strong style="font-size: 1rem;">Data: ${dataFormatada}</strong>
+                        <strong style="font-size: 0.95rem;">Data: ${dataFormatada}</strong>
                         <p style="font-size: 0.75rem; color: var(--text-muted);">${itensDia.length} funcionário(s) • R$ ${totalDia.toFixed(2).replace('.', ',')}</p>
                     </div>
-                    <div class="flex-row">
-                        <button onclick="abrirReciboDetalhado('${restauranteFiltro}', '${dataStr}')" class="action-btn" style="background-color: var(--primary); color: white; border: none;">📄 Abrir Recibo</button>
-                        <button onclick="excluirRecibo('${restauranteFiltro}', '${dataStr}')" class="action-btn delete">🗑️</button>
+                    <div class="flex-row" style="width: 100%; justify-content: flex-end;">
+                        <button onclick="abrirReciboDetalhado('${restauranteFiltro}', '${dataStr}')" class="action-btn" style="background-color: var(--primary); color: white; border: none; flex: 1; padding: 0.5rem;">📄 Abrir Recibo</button>
+                        <button onclick="excluirRecibo('${restauranteFiltro}', '${dataStr}')" class="action-btn delete" style="padding: 0.5rem 0.75rem;">🗑️</button>
                     </div>
                 `;
                 containerHistorico.appendChild(div);
@@ -757,13 +782,13 @@
             itensDia.forEach(item => {
                 total += item.valor;
                 const linha = document.createElement('div');
-                linha.style.cssText = "background: #f8fafc; padding: 0.75rem; border-radius: 0.375rem; border: 1px solid var(--border-color); margin-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center;";
+                linha.style.cssText = "background: #f8fafc; padding: 0.625rem; border-radius: 0.375rem; border: 1px solid var(--border-color); margin-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center; gap: 0.5rem;";
                 linha.innerHTML = `
                     <div>
-                        <strong style="font-size: 0.95rem; color: var(--text-main);">${item.nome}</strong> <span style="font-size: 0.75rem; color: var(--text-muted);">(${item.setor})</span>
-                        <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.125rem;">${item.ref}</div>
+                        <strong style="font-size: 0.85rem; color: var(--text-main);">${item.nome}</strong> <span style="font-size: 0.75rem; color: var(--text-muted);">(${item.setor})</span>
+                        <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.125rem;">${item.ref}</div>
                     </div>
-                    <span style="font-weight: 700; color: var(--primary);">R$ ${item.valor.toFixed(2).replace('.', ',')}</span>
+                    <span style="font-weight: 700; color: var(--primary); font-size: 0.85rem; white-space: nowrap;">R$ ${item.valor.toFixed(2).replace('.', ',')}</span>
                 `;
                 corpoModal.appendChild(linha);
             });
