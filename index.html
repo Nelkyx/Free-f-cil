@@ -1084,6 +1084,20 @@
 
 <body>
 
+    <!-- =========================================
+         TELA DE BLOQUEIO / SENHA
+         ========================================= -->
+    <div id="tela-bloqueio" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--primary); z-index: 9999; display: flex; justify-content: center; align-items: center; padding: 1rem;">
+        <div style="background: white; padding: 2rem; border-radius: 1rem; width: 100%; max-width: 350px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.3);">
+            <h2 style="color: var(--primary); margin-bottom: 0.5rem; font-size: 1.25rem;">Free Fácil</h2>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1.5rem;">Digite a senha para acessar o sistema</p>
+            
+            <input type="password" id="input-senha-app" placeholder="Senha de acesso" style="margin-bottom: 1rem; text-align: center; font-size: 1rem;" onkeypress="if(event.key === 'Enter') verificarSenha()">
+            
+            <button onclick="verificarSenha()" class="btn-primary" style="margin-top: 0;">ENTRAR</button>
+        </div>
+    </div>
+
 
     <!-- =========================================
          CABEÇALHO
@@ -1792,6 +1806,35 @@
          ========================================= -->
 
     <script>
+
+        /* =========================================
+           SISTEMA DE SEGURANÇA (SENHA)
+           ========================================= */
+        const SENHA_MESTRE = "1234"; // Altere aqui para a senha que desejar
+
+        function verificarSenha() {
+            const senhaDigitada = document.getElementById('input-senha-app').value;
+            
+            if (senhaDigitada === SENHA_MESTRE) {
+                document.getElementById('tela-bloqueio').classList.add('hidden');
+                sessionStorage.setItem('autenticado_free_facil', 'true');
+            } else {
+                alert('Senha incorreta!');
+                document.getElementById('input-senha-app').value = '';
+                document.getElementById('input-senha-app').focus();
+            }
+        }
+
+        // Verifica se já fez o login nesta sessão ao carregar a página
+        window.addEventListener('DOMContentLoaded', () => {
+            const jaAutenticado = sessionStorage.getItem('autenticado_free_facil');
+            if (jaAutenticado === 'true') {
+                document.getElementById('tela-bloqueio').classList.add('hidden');
+            } else {
+                document.getElementById('input-senha-app').focus();
+            }
+        });
+
 
         /* =========================================
            DATA INICIAL
