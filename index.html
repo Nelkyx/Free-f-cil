@@ -2,3368 +2,1276 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FreeFácil Pro - Mobile Experience</title>
 
-    <meta name="theme-color" content="#006B3C">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
-    <title>Free Fácil - Gestão de Frees</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-
-        /* =========================================
-           IDENTIDADE VISUAL - FREE FÁCIL
-           ========================================= */
-
         :root {
-            --primary: #006B3C;
-            --primary-hover: #00522E;
-
-            --success: #16A34A;
-            --success-hover: #15803D;
-
-            --green-bright: #39E66B;
-            --green-light: #DFF7E7;
-
-            --bg-color: #F4FBF6;
-            --card-bg: #FFFFFF;
-
-            --text-main: #17221B;
-            --text-muted: #64748B;
-
-            --border-color: #D8F0DF;
-
-            --danger: #E11D48;
-            --danger-light: #FFF1F2;
-
-            --shadow:
-                0 4px 15px rgba(0, 107, 60, 0.08);
+            --bg-base: #07090E;
+            --bg-card: rgba(17, 24, 39, 0.75);
+            --bg-card-hover: rgba(30, 41, 59, 0.85);
+            --border-card: rgba(255, 255, 255, 0.08);
+            --border-glow: rgba(56, 189, 248, 0.4);
+            
+            --cor-principal: #38BDF8;
+            --cor-principal-hover: #0EA5E9;
+            --cor-texto: #F8FAFC;
+            --cor-texto-muted: #94A3B8;
+            
+            --cor-erro: #F87171;
+            --cor-sucesso: #34D399;
         }
-
-
-        /* =========================================
-           RESET
-           ========================================= */
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-
-            font-family:
-                system-ui,
-                -apple-system,
-                BlinkMacSystemFont,
-                "Segoe UI",
-                Roboto,
-                Oxygen,
-                Ubuntu,
-                Cantarell,
-                sans-serif;
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
-
-
-        html {
-            scroll-behavior: smooth;
-        }
-
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-
+            background-color: var(--bg-base);
+            color: var(--cor-texto);
             min-height: 100vh;
-
-            padding-bottom: 3rem;
-
-            -webkit-text-size-adjust: 100%;
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 80px;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 10%, rgba(56, 189, 248, 0.06) 0%, transparent 45%),
+                radial-gradient(circle at 90% 90%, rgba(99, 102, 241, 0.06) 0%, transparent 45%);
         }
 
+        #aviso-container {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            left: 1rem;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            align-items: center;
+        }
 
-        /* =========================================
-           CABEÇALHO
-           ========================================= */
-
-        header {
-            background:
-                linear-gradient(
-                    135deg,
-                    #006B3C 0%,
-                    #008F50 100%
-                );
-
+        .aviso {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
             color: white;
+            padding: 0.75rem 1.25rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.6);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            animation: surgir 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            width: 100%;
+            max-width: 400px;
+        }
+        @keyframes surgir {
+            from { opacity: 0; transform: translateY(-15px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .aviso.erro { border-color: rgba(248, 113, 113, 0.4); color: #FCA5A5; }
+        .aviso.sucesso { border-color: rgba(52, 211, 153, 0.4); color: #6EE7B7; }
 
-            padding: 0.75rem 1rem;
+        /* TELA DE LOGIN */
+        #tela-login {
+            position: fixed;
+            inset: 0;
+            background: var(--bg-base);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
 
-            box-shadow:
-                0 4px 12px rgba(0, 0, 0, 0.12);
+        .card-login {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-card);
+            width: 100%;
+            max-width: 380px;
+            padding: 2rem 1.5rem;
+            border-radius: 24px;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+        }
 
+        .abas-login {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-card);
+            padding: 4px;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+        }
+
+        .aba-btn {
+            background: transparent;
+            border: none;
+            color: var(--cor-texto-muted);
+            padding: 0.65rem;
+            border-radius: 9px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .aba-btn.ativo {
+            background: var(--cor-principal);
+            color: #07090E;
+            box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3);
+        }
+
+        /* HEADER */
+        header {
+            background: rgba(7, 9, 14, 0.85);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-card);
+            height: 64px;
+            padding: 0 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             position: sticky;
-
             top: 0;
-
             z-index: 50;
         }
 
-
-        .header-container {
-            max-width: 1100px;
-
-            margin: 0 auto;
-
+        .logo-area {
             display: flex;
-
-            justify-content: space-between;
-
             align-items: center;
+            gap: 0.65rem;
+            cursor: pointer;
+        }
 
+        .logo-icone {
+            width: 34px;
+            height: 34px;
+            background: linear-gradient(135deg, var(--cor-principal), #6366F1);
+            color: #07090E;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.85rem;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+        }
+
+        .logo-texto {
+            font-size: 1.1rem;
+            font-weight: 800;
+            letter-spacing: -0.025em;
+        }
+
+        /* BARRA INFERIOR */
+        .barra-navegacao-inferior {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 68px;
+            background: rgba(11, 15, 25, 0.95);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border-card);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 90;
+            padding: 0 1rem;
+        }
+
+        .nav-item {
+            background: none;
+            border: none;
+            color: var(--cor-texto-muted);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 33%;
+        }
+        .nav-item svg {
+            width: 20px;
+            height: 20px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
+        .nav-item.ativo {
+            color: var(--cor-principal);
+        }
+        .nav-item.ativo svg {
+            stroke: var(--cor-principal);
+        }
+
+        .conteudo {
+            max-width: 700px;
+            width: 100%;
+            margin: 1.25rem auto;
+            padding: 0 1rem;
+            flex: 1;
+        }
+
+        .secao {
+            display: none !important;
+            animation: fadeIn 0.25s ease;
+        }
+        .secao.ativo {
+            display: block !important;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .cabecalho-secao {
+            margin-bottom: 1.25rem;
+        }
+        .cabecalho-secao h1 {
+            font-size: 1.25rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+        .cabecalho-secao p {
+            font-size: 0.8rem;
+            color: var(--cor-texto-muted);
+            margin-top: 0.2rem;
+        }
+
+        /* GRADE DE UNIDADES (PASTAS) */
+        .grade-unidades {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             gap: 1rem;
         }
 
-
-        /* =========================================
-           LOGO
-           ========================================= */
-
-        .logo-free {
+        .cartao-unidade {
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-card);
+            border-radius: 16px;
+            padding: 1.25rem;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
             display: flex;
-
-            align-items: center;
-
-            gap: 0.65rem;
-
-            text-decoration: none;
-
-            color: white;
-
-            min-width: 0;
-        }
-
-
-        .logo-icon {
-            width: 42px;
-            height: 42px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #39E66B,
-                    #16A34A
-                );
-
-            border-radius: 11px;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            box-shadow:
-                0 3px 8px rgba(0,0,0,0.18);
-
-            flex-shrink: 0;
-        }
-
-
-        .logo-icon svg {
-            width: 27px;
-            height: 27px;
-        }
-
-
-        .logo-text {
-            display: flex;
-
             flex-direction: column;
-
-            line-height: 1;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+        .cartao-unidade::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 4px; height: 100%;
+            background: linear-gradient(to bottom, var(--cor-principal), #6366F1);
+            opacity: 0.6;
+        }
+        .cartao-unidade:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--border-glow);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px -8px rgba(0,0,0,0.5);
         }
 
+        .pasta-icone {
+            display: inline-flex;
+            padding: 8px;
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--cor-principal);
+            border-radius: 10px;
+            margin-bottom: 0.75rem;
+        }
 
-        .logo-name {
-            font-size: 1.25rem;
-
+        .cartao-titulo {
+            font-size: 1rem;
+            font-weight: 700;
+        }
+        .cartao-sub {
+            font-size: 0.8rem;
+            color: var(--cor-texto-muted);
+            margin-top: 0.2rem;
+        }
+        .cartao-rodape {
+            margin-top: 1.25rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding-top: 0.75rem;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        .cartao-valor {
+            color: var(--cor-principal);
             font-weight: 800;
-
-            letter-spacing: -0.5px;
+            font-size: 0.95rem;
         }
 
-
-        .logo-name span {
-            color: var(--green-bright);
+        /* CARTÕES DE FORMULÁRIO */
+        .cartao {
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-card);
+            border-radius: 16px;
+            padding: 1.25rem;
+            margin-bottom: 1.25rem;
+            box-shadow: 0 15px 35px -10px rgba(0,0,0,0.5);
+            width: 100%;
+            max-width: 100%;
+            overflow: hidden;
         }
 
-
-        .logo-subtitle {
-            font-size: 0.62rem;
-
-            margin-top: 5px;
-
-            opacity: 0.88;
-
-            letter-spacing: 0.8px;
-
+        .cartao-cabecalho {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.6rem;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--cor-texto-muted);
+            letter-spacing: 0.05em;
             text-transform: uppercase;
         }
 
-
-        .restaurant-badge {
-            font-size: 0.75rem;
-
-            font-weight: 600;
-
-            background:
-                rgba(255,255,255,0.14);
-
-            border:
-                1px solid rgba(255,255,255,0.18);
-
-            padding:
-                0.4rem 0.65rem;
-
-            border-radius: 999px;
-
-            white-space: nowrap;
+        .grupo-campo {
+            margin-bottom: 1rem;
+            width: 100%;
+            max-width: 100%;
         }
-
-
-        /* =========================================
-           NAVEGAÇÃO
-           ========================================= */
-
-        .nav-abas {
-            max-width: 1100px;
-
-            margin:
-                1rem auto 0 auto;
-
-            padding:
-                0 1rem;
-
-            display: flex;
-
-            gap: 0.5rem;
-        }
-
-
-        .tab-btn {
-            padding:
-                0.55rem 1rem;
-
-            background-color:
-                #E2E8F0;
-
-            color:
-                var(--text-muted);
-
-            border: none;
-
-            border-radius:
-                0.5rem;
-
-            font-weight:
-                600;
-
-            font-size:
-                0.875rem;
-
-            cursor: pointer;
-
-            transition:
-                all 0.2s;
-        }
-
-
-        .tab-btn:hover {
-            background-color:
-                #D5DEE8;
-        }
-
-
-        .tab-btn.active {
-            background-color:
-                var(--primary);
-
-            color: white;
-
-            box-shadow:
-                0 3px 8px
-                rgba(0,107,60,0.18);
-        }
-
-
-        /* =========================================
-           CONTEÚDO PRINCIPAL
-           ========================================= */
-
-        main {
-            max-width: 1100px;
-
-            margin:
-                1rem auto;
-
-            padding:
-                0 1rem;
-
-            display: grid;
-
-            grid-template-columns: 1fr;
-
-            gap: 1rem;
-        }
-
-
-        @media (min-width: 768px) {
-
-            main.grid-layout {
-                grid-template-columns:
-                    1fr 1fr;
-
-                align-items:
-                    start;
-
-                gap:
-                    1.5rem;
-            }
-
-            main {
-                margin:
-                    1.5rem auto;
-            }
-        }
-
-
-        /* =========================================
-           CARDS
-           ========================================= */
-
-        .card {
-            background-color:
-                var(--card-bg);
-
-            padding:
-                1.25rem;
-
-            border-radius:
-                0.9rem;
-
-            box-shadow:
-                var(--shadow);
-
-            border:
-                1px solid var(--border-color);
-
-            margin-bottom:
-                1rem;
-        }
-
-
-        @media (min-width: 768px) {
-
-            .card {
-                padding:
-                    1.5rem;
-            }
-        }
-
-
-        .card h2 {
-            font-size:
-                1.125rem;
-
-            font-weight:
-                700;
-
-            color:
-                var(--text-main);
-
-            margin-bottom:
-                1rem;
-        }
-
-
-        /* =========================================
-           FORMULÁRIOS
-           ========================================= */
-
-        .form-group {
-            margin-bottom:
-                0.875rem;
-        }
-
 
         label {
-            display:
-                block;
-
-            font-size:
-                0.75rem;
-
-            font-weight:
-                700;
-
-            color:
-                var(--text-muted);
-
-            margin-bottom:
-                0.3rem;
-
-            text-transform:
-                uppercase;
-
-            letter-spacing:
-                0.025em;
+            display: block;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--cor-texto-muted);
+            margin-bottom: 0.35rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
         }
 
+        /* CORREÇÃO DEFINITIVA DO INPUT DE DATA */
+        input, select, textarea {
+            width: 100% !important;
+            max-width: 100% !important;
+            min-width: 0 !important;
+            height: 44px;
+            padding: 0 0.9rem;
+            background: rgba(7, 9, 14, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            font-size: 0.9rem;
+            color: var(--cor-texto);
+            outline: none;
+            transition: all 0.2s;
+            box-sizing: border-box;
+            display: block;
+        }
+        
+        input[type="date"] {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+        }
 
-        input,
-        select,
         textarea {
+            height: auto;
+            padding: 0.9rem;
+            line-height: 1.4;
+        }
 
+        input:focus, select:focus, textarea:focus {
+            background: rgba(7, 9, 14, 0.95);
+            border-color: var(--cor-principal);
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+        }
+
+        select option {
+            background: #0B0F19;
+            color: white;
+        }
+
+        .botao {
+            height: 44px;
+            padding: 0 1.2rem;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
             width: 100%;
-
-            padding:
-                0.7rem;
-
-            background-color:
-                #F8FAFC;
-
-            border:
-                1px solid var(--border-color);
-
-            border-radius:
-                0.55rem;
-
-            font-size:
-                16px;
-
-            color:
-                var(--text-main);
-
-            outline:
-                none;
-
-            transition:
-                border-color 0.2s,
-                box-shadow 0.2s,
-                background-color 0.2s;
+            max-width: 100%;
+            box-sizing: border-box;
+            transition: all 0.2s;
         }
 
-
-        input:focus,
-        select:focus,
-        textarea:focus {
-
-            border-color:
-                var(--success);
-
-            background-color:
-                white;
-
-            box-shadow:
-                0 0 0 3px
-                rgba(22,163,74,0.13);
+        .botao-principal { 
+            background: linear-gradient(135deg, var(--cor-principal), #0284C7);
+            color: #07090E;
+            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.25);
+        }
+        .botao-principal:hover { 
+            background: linear-gradient(135deg, #7DD3FC, var(--cor-principal));
+            transform: translateY(-1px);
         }
 
-
-        .grid-2 {
-
-            display:
-                grid;
-
-            grid-template-columns:
-                1fr 1fr;
-
-            gap:
-                0.5rem;
+        .botao-escuro { 
+            background: rgba(255, 255, 255, 0.04); 
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--cor-texto); 
+        }
+        .botao-escuro:hover { 
+            background: rgba(255, 255, 255, 0.08);
         }
 
-
-        /* =========================================
-           BOTÕES
-           ========================================= */
-
-        button {
-
-            cursor:
-                pointer;
-
-            border:
-                none;
-
-            border-radius:
-                0.55rem;
-
-            font-weight:
-                700;
-
-            font-size:
-                0.875rem;
-
-            transition:
-                background-color 0.2s,
-                transform 0.1s,
-                box-shadow 0.2s;
-        }
-
-
-        button:active {
-            transform:
-                scale(0.98);
-        }
-
-
-        .btn-primary {
-
+        .lista-itens {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            max-height: 350px;
+            overflow-y: auto;
             width: 100%;
-
-            background:
-                var(--primary);
-
-            color:
-                white;
-
-            padding:
-                0.75rem;
-
-            margin-top:
-                0.5rem;
-
-            box-shadow:
-                0 3px 8px
-                rgba(0,107,60,0.15);
         }
 
-
-        .btn-primary:hover {
-            background:
-                var(--primary-hover);
+        .item-linha {
+            background: rgba(7, 9, 14, 0.45);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            padding: 0.85rem 1rem;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            box-sizing: border-box;
         }
 
-
-        .btn-success {
-
-            background:
-                var(--success);
-
-            color:
-                white;
-
-            padding:
-                0.75rem;
-
-            width:
-                100%;
+        .item-info .nome {
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+        .item-info .detalhe {
+            font-size: 0.75rem;
+            color: var(--cor-texto-muted);
+            margin-top: 0.15rem;
+        }
+        .item-info .preco {
+            font-weight: 800;
+            color: var(--cor-principal);
+            font-size: 0.9rem;
+            margin-top: 0.2rem;
         }
 
-
-        .btn-success:hover {
-            background:
-                var(--success-hover);
+        .acoes-item {
+            display: flex;
+            gap: 0.35rem;
         }
 
+        .botao-acao {
+            height: 32px;
+            padding: 0 0.7rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 7px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            color: var(--cor-texto);
+        }
+        .botao-acao.apagar { color: #FCA5A5; background: rgba(248, 113, 113, 0.08); border-color: rgba(248, 113, 113, 0.2); }
 
-        .btn-danger-light {
-
-            background:
-                var(--danger-light);
-
-            color:
-                var(--danger);
-
-            padding:
-                0.75rem 1rem;
+        .janela-fundo {
+            position: fixed;
+            inset: 0;
+            background: rgba(7, 9, 14, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
         }
 
-
-        .btn-danger-light:hover {
-            background:
-                #FECdd3;
+        .janela-conteudo {
+            background: #111827;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 100%;
+            max-width: 450px;
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.8);
+            max-height: 90vh;
+            overflow-y: auto;
+            box-sizing: border-box;
         }
 
-
-        /* =========================================
-           BOTÕES DE AÇÃO
-           ========================================= */
-
-        .flex-row {
-
-            display:
-                flex;
-
-            gap:
-                0.5rem;
-
-            align-items:
-                center;
+        .vazio {
+            text-align: center;
+            color: var(--cor-texto-muted);
+            font-size: 0.8rem;
+            padding: 2rem 0;
         }
 
-
-        .justify-between {
-            justify-content:
-                space-between;
-        }
-
-
-        .action-buttons-grid {
-
-            display:
-                flex;
-
-            flex-direction:
-                column;
-
-            gap:
-                0.5rem;
-
-            margin-top:
-                1rem;
-        }
-
-
-        @media (min-width: 480px) {
-
-            .action-buttons-grid {
-
-                display:
-                    grid;
-
-                grid-template-columns:
-                    1fr 1fr auto;
-
-                align-items:
-                    center;
-            }
-
-            .action-buttons-grid button {
-
-                margin:
-                    0;
-
-                height:
-                    42px;
-
-                white-space:
-                    nowrap;
-            }
-        }
-
-
-        /* =========================================
-           LISTAGEM
-           ========================================= */
-
-        .list-container {
-
-            max-height:
-                320px;
-
-            overflow-y:
-                auto;
-
-            padding-right:
-                0.25rem;
-        }
-
-
-        .item-card {
-
-            background-color:
-                #F8FAFC;
-
-            padding:
-                0.875rem;
-
-            border-radius:
-                0.6rem;
-
-            border:
-                1px solid var(--border-color);
-
-            display:
-                flex;
-
-            justify-content:
-                space-between;
-
-            align-items:
-                center;
-
-            margin-bottom:
-                0.5rem;
-
-            gap:
-                0.5rem;
-        }
-
-
-        .item-card:hover {
-
-            border-color:
-                #A9DDB9;
-
-            background:
-                #FBFFFC;
-        }
-
-
-        .item-info p.nome {
-
-            font-weight:
-                700;
-
-            color:
-                var(--text-main);
-
-            font-size:
-                0.9rem;
-        }
-
-
-        .item-info span.setor {
-
-            font-size:
-                0.75rem;
-
-            font-weight:
-                normal;
-
-            color:
-                var(--text-muted);
-        }
-
-
-        .item-info p.valor {
-
-            color:
-                var(--primary);
-
-            font-weight:
-                700;
-
-            font-size:
-                0.9rem;
-
-            margin-top:
-                0.125rem;
-        }
-
-
-        .item-info p.ref {
-
-            font-size:
-                0.75rem;
-
-            color:
-                var(--text-muted);
-
-            word-break:
-                break-word;
-        }
-
-
-        .item-actions {
-
-            display:
-                flex;
-
-            gap:
-                0.25rem;
-
-            flex-shrink:
-                0;
-        }
-
-
-        .action-btn {
-
-            padding:
-                0.4rem 0.5rem;
-
-            background:
-                white;
-
-            border:
-                1px solid var(--border-color);
-
-            border-radius:
-                0.375rem;
-
-            font-size:
-                0.75rem;
-        }
-
-
-        .action-btn.delete {
-
-            background-color:
-                #FFF1F2;
-
-            color:
-                var(--danger);
-
-            border-color:
-                #FECDD3;
-        }
-
-
-        .action-btn:hover {
-            opacity:
-                0.85;
-        }
-
-
-        /* =========================================
-           TEXTOS
-           ========================================= */
-
-        .text-total {
-
-            font-size:
-                0.95rem;
-
-            font-weight:
-                800;
-
-            color:
-                var(--primary);
-        }
-
-
-        .empty-msg {
-
-            font-size:
-                0.8rem;
-
-            color:
-                var(--text-muted);
-
-            text-align:
-                center;
-
-            padding:
-                1.5rem 0;
-        }
-
-
-        /* =========================================
-           HISTÓRICO
-           ========================================= */
-
-        .historico-card {
-
-            background-color:
-                #F8FAFC;
-
-            padding:
-                0.875rem;
-
-            border-radius:
-                0.6rem;
-
-            border:
-                1px solid var(--border-color);
-
-            margin-bottom:
-                0.75rem;
-
-            display:
-                flex;
-
-            flex-direction:
-                column;
-
-            gap:
-                0.5rem;
-        }
-
-
-        @media (min-width: 480px) {
-
-            .historico-card {
-
-                flex-direction:
-                    row;
-
-                justify-content:
-                    space-between;
-
-                align-items:
-                    center;
-            }
-        }
-
-
-        /* =========================================
-           MODAL
-           ========================================= */
-
-        .modal-overlay {
-
-            position:
-                fixed;
-
-            top:
-                0;
-
-            left:
-                0;
-
-            width:
-                100%;
-
-            height:
-                100%;
-
-            background:
-                rgba(0,0,0,0.55);
-
-            display:
-                flex;
-
-            justify-content:
-                center;
-
-            align-items:
-                center;
-
-            z-index:
-                100;
-
-            padding:
-                1rem;
-        }
-
-
-        .modal-content {
-
-            background:
-                white;
-
-            padding:
-                1.5rem;
-
-            border-radius:
-                0.9rem;
-
-            width:
-                100%;
-
-            max-width:
-                600px;
-
-            max-height:
-                85vh;
-
-            overflow-y:
-                auto;
-
-            box-shadow:
-                0 15px 35px
-                rgba(0,0,0,0.25);
-        }
-
-
-        /* =========================================
-           UTILITÁRIOS
-           ========================================= */
-
-        .hidden {
-            display:
-                none !important;
-        }
-
-
-        /* =========================================
-           RESPONSIVIDADE
-           ========================================= */
-
-        @media (max-width: 480px) {
-
-            header {
-                padding:
-                    0.7rem 0.75rem;
-            }
-
-
-            .logo-icon {
-
-                width:
-                    38px;
-
-                height:
-                    38px;
-            }
-
-
-            .logo-icon svg {
-
-                width:
-                    24px;
-
-                height:
-                    24px;
-            }
-
-
-            .logo-name {
-
-                font-size:
-                    1.05rem;
-            }
-
-
-            .logo-subtitle {
-
-                font-size:
-                    0.55rem;
-            }
-
-
-            .restaurant-badge {
-
-                font-size:
-                    0.65rem;
-
-                padding:
-                    0.3rem 0.5rem;
-            }
-
-
-            .nav-abas {
-
-                overflow-x:
-                    auto;
-
-                padding:
-                    0 0.75rem;
-            }
-
-
-            .tab-btn {
-
-                white-space:
-                    nowrap;
-            }
-
-
-            main {
-
-                padding:
-                    0 0.75rem;
-            }
-
-
-            .card {
-
-                padding:
-                    1rem;
-            }
-
-
-            .item-card {
-
-                align-items:
-                    flex-start;
-            }
-
-
-            .item-actions {
-
-                flex-direction:
-                    column;
-            }
-        }
-
+        .escondido { display: none !important; }
     </style>
 </head>
-
-
 <body>
 
-    <!-- =========================================
-         TELA DE BLOQUEIO / SENHA
-         ========================================= -->
-    <div id="tela-bloqueio" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--primary); z-index: 9999; display: flex; justify-content: center; align-items: center; padding: 1rem;">
-        <div style="background: white; padding: 2rem; border-radius: 1rem; width: 100%; max-width: 350px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.3);">
-            <h2 style="color: var(--primary); margin-bottom: 0.5rem; font-size: 1.25rem;">Free Fácil</h2>
-            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1.5rem;">Digite a senha para acessar o sistema</p>
+    <div id="aviso-container"></div>
+
+    <!-- TELA DE LOGIN -->
+    <div id="tela-login">
+        <div class="card-login">
+            <div style="width: 44px; height: 44px; background: linear-gradient(135deg, var(--cor-principal), #6366F1); color: #07090E; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem auto; font-weight: 800; font-size: 1rem; box-shadow: 0 0 20px rgba(56,189,248,0.3);">FF</div>
+            <h2 style="font-size: 1.15rem; font-weight: 800; margin-bottom: 0.2rem;">FreeFácil Pro</h2>
+            <p style="font-size: 0.8rem; color: var(--cor-texto-muted); margin-bottom: 1.25rem;">Selecione o seu perfil de acesso</p>
             
-            <input type="password" id="input-senha-app" placeholder="Senha de acesso" style="margin-bottom: 1rem; text-align: center; font-size: 1rem;" onkeypress="if(event.key === 'Enter') verificarSenha()">
-            
-            <button onclick="verificarSenha()" class="btn-primary" style="margin-top: 0;">ENTRAR</button>
+            <div class="abas-login">
+                <button class="aba-btn ativo" id="aba-gestor" onclick="mudarAbaLogin('gestor')">Gestor</button>
+                <button class="aba-btn" id="aba-funcionario" onclick="mudarAbaLogin('funcionario')">Funcionário</button>
+            </div>
+
+            <!-- Bloco Gestor -->
+            <div id="bloco-login-gestor">
+                <div class="grupo-campo">
+                    <input type="password" id="campo-senha" placeholder="Senha do gestor" style="text-align: center;" onkeypress="if(event.key==='Enter') entrarGestor()">
+                </div>
+                <button onclick="entrarGestor()" class="botao botao-principal">Entrar como Gestor</button>
+            </div>
+
+            <!-- Bloco Funcionário -->
+            <div id="bloco-login-funcionario" class="escondido">
+                <div class="grupo-campo">
+                    <select id="select-funcionario-unidade" style="text-align: center; margin-bottom: 0.75rem;">
+                        <option value="Carlos Gomes">Carlos Gomes</option>
+                        <option value="Pontal">Pontal</option>
+                        <option value="Gravataí">Gravataí</option>
+                        <option value="Canoas">Canoas</option>
+                        <option value="Caxias do Sul">Caxias do Sul</option>
+                    </select>
+                </div>
+                <button onclick="entrarFuncionario()" class="botao" style="background: rgba(56,189,248,0.15); color: var(--cor-principal); border: 1px solid rgba(56,189,248,0.3);">Ver Escala da Unidade</button>
+            </div>
         </div>
     </div>
 
-
-    <!-- =========================================
-         CABEÇALHO
-         ========================================= -->
-
+    <!-- HEADER -->
     <header>
-
-        <div class="header-container">
-
-
-            <!-- LOGO -->
-
-            <div class="logo-free">
-
-                <div class="logo-icon">
-
-                    <svg
-                        viewBox="0 0 64 64"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-
-                        <!-- Prancheta -->
-
-                        <rect
-                            x="14"
-                            y="12"
-                            width="36"
-                            height="43"
-                            rx="6"
-                            stroke="white"
-                            stroke-width="5"
-                        />
-
-
-                        <!-- Presilha -->
-
-                        <path
-                            d="M25 12V9C25 6.8 26.8 5 29 5H35C37.2 5 39 6.8 39 9V12"
-                            stroke="white"
-                            stroke-width="5"
-                            stroke-linecap="round"
-                        />
-
-
-                        <!-- Pessoa -->
-
-                        <circle
-                            cx="27"
-                            cy="27"
-                            r="5"
-                            fill="white"
-                        />
-
-
-                        <path
-                            d="M19 40C19 35.6 22.6 32 27 32C31.4 32 35 35.6 35 40"
-                            fill="white"
-                        />
-
-
-                        <!-- Check -->
-
-                        <circle
-                            cx="45"
-                            cy="43"
-                            r="12"
-                            fill="#006B3C"
-                        />
-
-
-                        <path
-                            d="M39 43L43 47L51 38"
-                            stroke="white"
-                            stroke-width="4"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        />
-
-                    </svg>
-
-                </div>
-
-
-                <div class="logo-text">
-
-                    <div class="logo-name">
-                        FREE <span>FÁCIL</span>
-                    </div>
-
-                    <div class="logo-subtitle">
-                        Gestão de Frees
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- RESTAURANTE ATIVO -->
-
-            <span
-                id="restaurante-ativo-label"
-                class="restaurant-badge"
-            >
-                Carlos Gomes
-            </span>
-
+        <div class="logo-area" onclick="irParaInicio()">
+            <div class="logo-icone">FF</div>
+            <div class="logo-texto">FreeFácil</div>
         </div>
-
+        <div id="badge-perfil" style="font-size: 0.75rem; font-weight: 700; background: rgba(56,189,248,0.1); color: var(--cor-principal); padding: 4px 10px; border-radius: 20px; border: 1px solid rgba(56,189,248,0.2);">Gestor</div>
     </header>
 
+    <!-- CONTEÚDO PRINCIPAL -->
+    <div class="conteudo">
 
-
-    <!-- =========================================
-         NAVEGAÇÃO
-         ========================================= -->
-
-    <div class="nav-abas">
-
-        <button
-            id="btn-aba-lancar"
-            class="tab-btn active"
-            onclick="mudarAba('lancar')"
-        >
-            Lançamento
-        </button>
-
-
-        <button
-            id="btn-aba-historico"
-            class="tab-btn"
-            onclick="mudarAba('historico')"
-        >
-            Histórico / Recibos
-        </button>
-
-    </div>
-
-
-
-    <!-- =========================================
-         ABA LANÇAMENTO
-         ========================================= -->
-
-    <main
-        id="conteudo-lancar"
-        class="grid-layout"
-    >
-
-
-        <!-- FORMULÁRIO -->
-
-        <section class="card">
-
-            <h2>Novo Free</h2>
-
-
-            <!-- RESTAURANTE -->
-
-            <div class="form-group">
-
-                <label>
-                    Restaurante
-                </label>
-
-                <select
-                    id="input-restaurante"
-                    onchange="atualizarTela()"
-                >
-
-                    <option value="Carlos Gomes">
-                        Carlos Gomes
-                    </option>
-
-                    <option value="Pontal">
-                        Pontal
-                    </option>
-
-                    <option value="Gravataí">
-                        Gravataí
-                    </option>
-
-                    <option value="Canoas">
-                        Canoas
-                    </option>
-
-                    <option value="Caxias do Sul">
-                        Caxias do Sul
-                    </option>
-
-                </select>
-
+        <!-- TELA 1: UNIDADES (PASTAS) -->
+        <div id="secao-inicio" class="secao ativo">
+            <div class="cabecalho-secao">
+                <h1>Unidades Operacionais</h1>
+                <p>Toque em uma pasta para gerenciar os lançamentos.</p>
             </div>
-
-
-            <!-- DATA -->
-
-            <div class="form-group">
-
-                <label>
-                    Data
-                </label>
-
-                <input
-                    type="date"
-                    id="input-data"
-                >
-
-            </div>
-
-
-            <!-- FUNCIONÁRIO -->
-
-            <div class="form-group">
-
-                <label>
-                    Nome do Funcionário
-                </label>
-
-                <input
-                    type="text"
-                    id="input-nome"
-                    placeholder="Ex: Damian"
-                    autocomplete="off"
-                >
-
-            </div>
-
-
-            <!-- SETOR -->
-
-            <div class="form-group">
-
-                <label>
-                    Setor
-                </label>
-
-                <select id="input-setor">
-
-                    <option value="Salão">
-                        🍽️ Salão
-                    </option>
-
-                    <option value="Bar">
-                        🍸 Bar
-                    </option>
-
-                    <option value="Caixa">
-                        💰 Caixa
-                    </option>
-
-                    <option value="Cozinha">
-                        👨‍🍳 Cozinha
-                    </option>
-
-                    <option value="S.G.">
-                        🧹 Serviços Gerais
-                    </option>
-
-                    <option value="Estoque">
-                        📦 Estoque
-                    </option>
-
-                    <option value="Eventos">
-                        🎉 Eventos
-                    </option>
-
-                    <option value="Outro">
-                        Outro
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <!-- TIPO DE FREE -->
-
-            <div class="form-group">
-
-                <label>
-                    Tipo de Free
-                </label>
-
-                <select
-                    id="input-tipo"
-                    onchange="alternarCamposHorario()"
-                >
-
-                    <option value="completo">
-                        Turno completo
-                    </option>
-
-                    <option value="parcial">
-                        Horário parcial
-                    </option>
-
-                    <option value="extra">
-                        Extra após o ponto
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <!-- TURNO COMPLETO -->
-
-            <div
-                id="bloco-completo"
-                class="form-group"
-            >
-
-                <label>
-                    Horário do Turno
-                </label>
-
-                <select id="input-turno-completo">
-
-                    <option value="10h30 - 19h">
-                        10h30 às 19h — R$ 120,00
-                    </option>
-
-                    <option value="12h - 20h30">
-                        12h às 20h30 — R$ 120,00
-                    </option>
-
-                    <option value="13h - 21h30">
-                        13h às 21h30 — R$ 120,00
-                    </option>
-
-                    <option value="14h - 22h30">
-                        14h às 22h30 — R$ 120,00
-                    </option>
-
-                    <option value="8h - 16h30">
-                        8h às 16h30 — R$ 120,00
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <!-- HORÁRIO PARCIAL / EXTRA -->
-
-            <div
-                id="bloco-horarios"
-                class="hidden grid-2 form-group"
-            >
-
-                <div>
-
-                    <label id="label-inicio-txt">
-                        Início
-                    </label>
-
-                    <input
-                        type="text"
-                        id="input-inicio"
-                        placeholder="Ex: 14h"
-                    >
-
-                </div>
-
-
-                <div id="wrapper-saida">
-
-                    <label id="label-saida-txt">
-                        Saída
-                    </label>
-
-                    <input
-                        type="text"
-                        id="input-saida"
-                        placeholder="Ex: 16h"
-                    >
-
-                </div>
-
-            </div>
-
-
-            <!-- ADICIONAR -->
-
-            <button
-                onclick="adicionarFree()"
-                class="btn-primary"
-            >
-                ＋ ADICIONAR FREE
-            </button>
-
-        </section>
-
-
-
-        <!-- =====================================
-             FREES DO DIA
-             ===================================== -->
-
-        <div>
-
-            <section class="card">
-
-                <div
-                    class="flex-row justify-between"
-                    style="margin-bottom: 1rem;"
-                >
-
-                    <h2>
-                        Frees do Dia
-                    </h2>
-
-                    <span
-                        id="total-geral"
-                        class="text-total"
-                    >
-                        Total: R$ 0,00
-                    </span>
-
-                </div>
-
-
-                <div
-                    id="lista-frees"
-                    class="list-container"
-                >
-                </div>
-
-
-                <!-- BOTÕES -->
-
-                <div class="action-buttons-grid">
-
-                    <button
-                        onclick="gerarTexto()"
-                        class="btn-success"
-                    >
-                        📋 GERAR TEXTO
-                    </button>
-
-
-                    <button
-                        onclick="salvarReciboDia()"
-                        class="btn-primary"
-                        style="
-                            background-color:
-                            var(--success);
-                            margin: 0;
-                        "
-                    >
-                        💾 SALVAR RECIBO
-                    </button>
-
-
-                    <button
-                        onclick="limparTudo()"
-                        class="btn-danger-light"
-                    >
-                        Limpar
-                    </button>
-
-                </div>
-
-            </section>
-
-
-
-            <!-- =================================
-                 TEXTO PARA COPIAR
-                 ================================= -->
-
-            <section
-                id="secao-texto"
-                class="card hidden"
-            >
-
-                <h2>
-                    Texto para Copiar
-                </h2>
-
-
-                <div class="form-group">
-
-                    <textarea
-                        id="texto-gerado"
-                        rows="6"
-                        readonly
-                    ></textarea>
-
-                </div>
-
-
-                <button
-                    onclick="copiarTexto()"
-                    class="btn-primary"
-                    style="
-                        background-color:
-                        #17221B;
-                    "
-                >
-                    📋 COPIAR TEXTO PRONTO
-                </button>
-
-            </section>
-
+            <div id="grade-filiais" class="grade-unidades"></div>
         </div>
 
-    </main>
-
-
-
-    <!-- =========================================
-         ABA HISTÓRICO
-         ========================================= -->
-
-    <main
-        id="conteudo-historico"
-        class="hidden"
-    >
-
-        <section class="card">
-
-            <h2>
-                Histórico de Recibos Salvos
-            </h2>
-
-
-            <div
-                class="form-group"
-                style="
-                    max-width: 100%;
-                    margin-bottom: 1.5rem;
-                "
-            >
-
-                <label>
-                    Filtrar por Restaurante
-                </label>
-
-                <select
-                    id="filtro-restaurante-historico"
-                    onchange="atualizarHistoricoTela()"
-                >
-
-                    <option value="Carlos Gomes">
-                        Carlos Gomes
-                    </option>
-
-                    <option value="Pontal">
-                        Pontal
-                    </option>
-
-                    <option value="Gravataí">
-                        Gravataí
-                    </option>
-
-                    <option value="Canoas">
-                        Canoas
-                    </option>
-
-                    <option value="Caxias do Sul">
-                        Caxias do Sul
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <div
-                id="lista-historico"
-                class="list-container"
-                style="max-height: 500px;"
-            >
-            </div>
-
-        </section>
-
-    </main>
-
-
-
-    <!-- =========================================
-         MODAL RECIBO
-         ========================================= -->
-
-    <div
-        id="modal-recibo"
-        class="modal-overlay hidden"
-    >
-
-        <div class="modal-content">
-
-            <div
-                class="flex-row justify-between"
-                style="
-                    border-bottom:
-                    2px solid var(--border-color);
-
-                    padding-bottom:
-                    0.75rem;
-
-                    margin-bottom:
-                    1rem;
-                "
-            >
-
+        <!-- TELA 2: OPERACIONAL DA UNIDADE -->
+        <div id="secao-operacional" class="secao">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
                 <div>
+                    <button onclick="irParaInicio()" style="background: none; border: none; color: var(--cor-principal); font-size: 0.8rem; font-weight: 700; cursor: pointer; margin-bottom: 0.3rem;">← Voltar para Pastas</button>
+                    <h1 id="titulo-unidade-atual" style="font-size: 1.25rem; font-weight: 800;">Unidade</h1>
+                </div>
+            </div>
 
-                    <h2
-                        id="modal-titulo"
-                        style="
-                            margin: 0;
-                            color: var(--primary);
-                            font-size: 1.1rem;
-                        "
-                    >
-                        Recibo de Frees
-                    </h2>
+            <div class="cartao" id="painel-novo-lancamento">
+                <div class="cartao-cabecalho">Novo Lançamento</div>
 
-
-                    <span
-                        id="modal-subtitulo"
-                        style="
-                            font-size: 0.75rem;
-                            color: var(--text-muted);
-                        "
-                    >
-                        Restaurante e Data
-                    </span>
-
+                <div class="grupo-campo">
+                    <label>Data</label>
+                    <input type="date" id="input-data" onchange="carregarLancamentosDia()">
                 </div>
 
+                <div class="grupo-campo">
+                    <label>Tipo de Turno</label>
+                    <select id="input-tipo" onchange="mudarTipoTurno()">
+                        <option value="completo">Turno Fixo (R$ 120,00)</option>
+                        <option value="parcial">Parcial (Por hora)</option>
+                        <option value="extra">Extra (Por hora)</option>
+                    </select>
+                </div>
 
-                <button
-                    onclick="fecharModalRecibo()"
-                    class="action-btn delete"
-                >
-                    ✕ Fechar
-                </button>
+                <div class="grupo-campo">
+                    <label>Nome do Colaborador</label>
+                    <input type="text" id="input-nome" placeholder="Ex: Damian ou Lucas" autocomplete="off">
+                </div>
 
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                    <div class="grupo-campo" style="margin-bottom: 0;">
+                        <label>Setor</label>
+                        <select id="input-setor">
+                            <option value="bar">bar</option>
+                            <option value="salão">salão</option>
+                            <option value="caixa">caixa</option>
+                            <option value="cozinha">cozinha</option>
+                            <option value="s.g">s.g</option>
+                            <option value="eventos">eventos</option>
+                            <option value="estoque">estoque</option>
+                        </select>
+                    </div>
+
+                    <div class="grupo-campo" id="bloco-escala" style="margin-bottom: 0;">
+                        <label>Horário Fixo</label>
+                        <select id="input-escala">
+                            <option value="das 10h30 - 19h">10h30 às 19h (R$ 120)</option>
+                            <option value="das 12h - 20h30">12h às 20h30 (R$ 120)</option>
+                            <option value="das 13h - 21h30">13h às 21h30 (R$ 120)</option>
+                            <option value="das 14h - 22h30">14h às 22h30 (R$ 120)</option>
+                            <option value="das 8h - 16h30">8h às 16h30 (R$ 120)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="bloco-horas" class="grupo-campo escondido" style="margin-top: 1rem;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                        <div>
+                            <label>Início</label>
+                            <input type="text" id="input-inicio" placeholder="Ex: 16h">
+                        </div>
+                        <div>
+                            <label>Saída</label>
+                            <input type="text" id="input-saida" placeholder="Ex: 22h30">
+                        </div>
+                    </div>
+                    <div class="grupo-campo" style="margin-top: 0.75rem; margin-bottom: 0;">
+                        <label>Referência de Data/Observação (Opcional)</label>
+                        <input type="text" id="input-obs-extra" placeholder="Ex: ref ao dia 30/09 das 10h30 - 22h30 e 01/10">
+                    </div>
+                </div>
+
+                <button onclick="adicionarRegistro()" class="botao botao-principal" id="btn-adicionar-lista" style="margin-top: 1.25rem;">Adicionar na Lista</button>
             </div>
 
+            <div class="cartao">
+                <div class="cartao-cabecalho">
+                    <span>Lista do Dia</span>
+                    <span id="texto-total-dia" style="color: var(--cor-principal); font-weight: 800;">R$ 0,00</span>
+                </div>
 
-            <div
-                id="modal-corpo-itens"
-                style="
-                    max-height: 300px;
-                    overflow-y: auto;
-                    margin-bottom: 1rem;
-                "
-            >
+                <div id="lista-lancamentos" class="lista-itens" style="margin-bottom: 1rem;"></div>
+
+                <div id="acoes-gestor-bloco" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                    <button onclick="criarTextoRelatorio()" class="botao botao-escuro">Gerar Texto</button>
+                    <button onclick="salvarReciboOficial()" class="botao botao-principal">Salvar Recibo</button>
+                </div>
             </div>
 
+            <div id="cartao-texto-gerado" class="cartao escondido">
+                <div class="cartao-cabecalho">Texto Pronto para Enviar</div>
+                <div class="grupo-campo">
+                    <textarea id="texto-saida" rows="6" readonly style="font-family: monospace; font-size: 0.8rem; color: var(--cor-principal);"></textarea>
+                </div>
+                <button onclick="copiarTexto()" class="botao botao-escuro">Copiar Texto</button>
+            </div>
+        </div>
 
-            <div
-                style="
-                    border-top:
-                    2px solid var(--border-color);
-
-                    padding-top:
-                    0.75rem;
-
-                    display:
-                    flex;
-
-                    justify-content:
-                    space-between;
-
-                    align-items:
-                    center;
-                "
-            >
-
-                <span
-                    style="
-                        font-weight: 600;
-                        color: var(--text-muted);
-                        font-size: 0.85rem;
-                    "
-                >
-                    TOTAL GERAL:
-                </span>
-
-
-                <span
-                    id="modal-total-geral"
-                    class="text-total"
-                    style="font-size: 1.1rem;"
-                >
-                    R$ 0,00
-                </span>
-
+        <!-- TELA 3: HISTÓRICO DE RECIBOS -->
+        <div id="secao-historico" class="secao">
+            <div class="cabecalho-secao" style="margin-bottom: 1rem;">
+                <h1>Histórico de Recibos</h1>
+                <p>Consulte relatórios e recibos salvos anteriormente.</p>
             </div>
 
+            <div class="cartao">
+                <div class="grupo-campo" style="max-width: 250px; margin-bottom: 1rem;">
+                    <label>Filtrar Unidade</label>
+                    <select id="filtro-historico" onchange="carregarHistorico()">
+                        <option value="Todas">Todas</option>
+                        <option value="Carlos Gomes">Carlos Gomes</option>
+                        <option value="Pontal">Pontal</option>
+                        <option value="Gravataí">Gravataí</option>
+                        <option value="Canoas">Canoas</option>
+                        <option value="Caxias do Sul">Caxias do Sul</option>
+                    </select>
+                </div>
+                <div id="lista-historico" class="lista-itens" style="max-height: 420px;"></div>
+            </div>
         </div>
 
     </div>
 
+    <!-- BARRA INFERIOR -->
+    <nav class="barra-navegacao-inferior" id="barra-inferior">
+        <button onclick="irParaInicio()" class="nav-item ativo" id="nav-inicio">
+            <svg viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            Início
+        </button>
+        <button onclick="irParaHistorico()" class="nav-item" id="nav-historico">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            Histórico
+        </button>
+        <button onclick="sairSistema()" class="nav-item" style="color: #FCA5A5;">
+            <svg viewBox="0 0 24 24" style="stroke: #FCA5A5;"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            Sair
+        </button>
+    </nav>
 
+    <!-- JANELA DE DETALHES -->
+    <div id="janela-detalhes" class="janela-fundo escondido">
+        <div class="janela-conteudo">
+            <div class="cartao-cabecalho" style="margin-bottom: 1rem;">
+                <div>
+                    <h3 id="modal-titulo" style="font-size: 0.9rem; font-weight: 700; color: white;">Recibo</h3>
+                    <span id="modal-sub" style="font-size: 0.75rem; color: var(--cor-texto-muted);">Data</span>
+                </div>
+                <button onclick="fecharJanela()" class="botao-acao apagar" style="width: 28px; height: 28px; padding: 0;">✕</button>
+            </div>
+            <div id="modal-lista" class="lista-itens" style="max-height: 250px; margin-bottom: 1rem;"></div>
+            <div style="border-top: 1px solid rgba(255,255,255,0.08); padding-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; font-weight: 700;">
+                <span>Total:</span>
+                <span id="modal-total" style="color: var(--cor-principal);">R$ 0,00</span>
+            </div>
+        </div>
+    </div>
 
-    <!-- =========================================
-         JAVASCRIPT
-         ========================================= -->
-
+    <!-- SCRIPT DE CONTROLE -->
     <script>
+        const SENHA_CORRETA = "Salvador@10";
+        const FILIAIS = ["Carlos Gomes", "Pontal", "Gravataí", "Canoas", "Caxias do Sul"];
+        let unidadeSelecionada = "Carlos Gomes";
+        let itemEditando = null;
+        let tipoUsuario = 'gestor';
 
-        /* =========================================
-           SISTEMA DE SEGURANÇA (SENHA)
-           ========================================= */
-        const SENHA_MESTRE = "Salvador@10"; 
-
-        function verificarSenha() {
-            const senhaDigitada = document.getElementById('input-senha-app').value;
-            
-            if (senhaDigitada === SENHA_MESTRE) {
-                document.getElementById('tela-bloqueio').classList.add('hidden');
-                sessionStorage.setItem('autenticado_free_facil', 'true');
-            } else {
-                alert('Senha incorreta!');
-                document.getElementById('input-senha-app').value = '';
-                document.getElementById('input-senha-app').focus();
-            }
+        function mostrarAviso(msg, tipo = 'sucesso') {
+            const container = document.getElementById('aviso-container');
+            if (!container) return;
+            const aviso = document.createElement('div');
+            aviso.className = `aviso ${tipo}`;
+            aviso.innerHTML = `<span>${tipo === 'sucesso' ? '●' : '▲'}</span> <span>${msg}</span>`;
+            container.appendChild(aviso);
+            setTimeout(() => {
+                aviso.style.opacity = '0';
+                setTimeout(() => aviso.remove(), 200);
+            }, 3000);
         }
 
-        // Verifica se já fez o login nesta sessão ao carregar a página
         window.addEventListener('DOMContentLoaded', () => {
-            const jaAutenticado = sessionStorage.getItem('autenticado_free_facil');
-            if (jaAutenticado === 'true') {
-                document.getElementById('tela-bloqueio').classList.add('hidden');
+            if (sessionStorage.getItem('logado') === 'sim') {
+                const telaLogin = document.getElementById('tela-login');
+                if (telaLogin) telaLogin.classList.add('escondido');
+                tipoUsuario = sessionStorage.getItem('tipo_usuario') || 'gestor';
+                atualizarInterfacePerfil();
             } else {
-                document.getElementById('input-senha-app').focus();
+                const campoSenha = document.getElementById('campo-senha');
+                if (campoSenha) campoSenha.focus();
             }
+            const inputData = document.getElementById('input-data');
+            if (inputData) inputData.valueAsDate = new Date();
+            
+            montarGradeUnidades();
+            mudarTipoTurno();
         });
 
+        function mudarAbaLogin(tipo) {
+            const btnGestor = document.getElementById('aba-gestor');
+            const btnFunc = document.getElementById('aba-funcionario');
+            const blocoG = document.getElementById('bloco-login-gestor');
+            const blocoF = document.getElementById('bloco-login-funcionario');
 
-        /* =========================================
-           DATA INICIAL
-           ========================================= */
-
-        document.getElementById(
-            'input-data'
-        ).valueAsDate = new Date();
-
-
-        let editandoId = null;
-
-
-
-        /* =========================================
-           TROCAR ABA
-           ========================================= */
-
-        function mudarAba(aba) {
-
-            const btnLancar =
-                document.getElementById(
-                    'btn-aba-lancar'
-                );
-
-            const btnHistorico =
-                document.getElementById(
-                    'btn-aba-historico'
-                );
-
-            const divLancar =
-                document.getElementById(
-                    'conteudo-lancar'
-                );
-
-            const divHistorico =
-                document.getElementById(
-                    'conteudo-historico'
-                );
-
-
-            if (aba === 'lancar') {
-
-                btnLancar.classList.add('active');
-
-                btnHistorico.classList.remove('active');
-
-                divLancar.classList.remove('hidden');
-
-                divHistorico.classList.add('hidden');
-
+            if (tipo === 'gestor') {
+                btnGestor.classList.add('ativo');
+                btnFunc.classList.remove('ativo');
+                blocoG.classList.remove('escondido');
+                blocoF.classList.add('escondido');
             } else {
-
-                btnHistorico.classList.add('active');
-
-                btnLancar.classList.remove('active');
-
-                divHistorico.classList.remove('hidden');
-
-                divLancar.classList.add('hidden');
-
-
-                document.getElementById(
-                    'filtro-restaurante-historico'
-                ).value =
-                    document.getElementById(
-                        'input-restaurante'
-                    ).value;
-
-
-                atualizarHistoricoTela();
+                btnFunc.classList.add('ativo');
+                btnGestor.classList.remove('ativo');
+                blocoF.classList.remove('escondido');
+                blocoG.classList.add('escondido');
             }
-
         }
 
-
-
-        /* =========================================
-           DATA
-           ========================================= */
-
-        function getDataSelecionada() {
-
-            return document.getElementById(
-                'input-data'
-            ).value;
-
+        function entrarGestor() {
+            const campoSenha = document.getElementById('campo-senha');
+            if (!campoSenha) return;
+            if (campoSenha.value === SENHA_CORRETA) {
+                tipoUsuario = 'gestor';
+                sessionStorage.setItem('logado', 'sim');
+                sessionStorage.setItem('tipo_usuario', 'gestor');
+                document.getElementById('tela-login').classList.add('escondido');
+                atualizarInterfacePerfil();
+                mostrarAviso('Bem-vindo, Gestor!');
+                montarGradeUnidades();
+            } else {
+                mostrarAviso('Senha incorreta.', 'erro');
+                campoSenha.value = '';
+                campoSenha.focus();
+            }
         }
 
-
-
-        /* =========================================
-           BANCO DE DADOS LOCAL
-           ========================================= */
-
-        function carregarDados() {
-
-            const dados =
-                localStorage.getItem(
-                    'frees_app_lancamentos_v9'
-                );
-
-            return dados
-                ? JSON.parse(dados)
-                : {};
-
+        function entrarFuncionario() {
+            const selectUnidade = document.getElementById('select-funcionario-unidade');
+            unidadeSelecionada = selectUnidade.value;
+            tipoUsuario = 'funcionario';
+            sessionStorage.setItem('logado', 'sim');
+            sessionStorage.setItem('tipo_usuario', 'funcionario');
+            document.getElementById('tela-login').classList.add('escondido');
+            atualizarInterfacePerfil();
+            mostrarAviso(`Acessando como Funcionário (${unidadeSelecionada})`);
+            abrirUnidade(unidadeSelecionada);
         }
 
+        function atualizarInterfacePerfil() {
+            const badge = document.getElementById('badge-perfil');
+            const painelNovo = document.getElementById('painel-novo-lancamento');
+            const blocoAcoes = document.getElementById('acoes-gestor-bloco');
 
-        function salvarDados(dados) {
-
-            localStorage.setItem(
-                'frees_app_lancamentos_v9',
-                JSON.stringify(dados)
-            );
-
-            atualizarTela();
-
+            if (tipoUsuario === 'funcionario') {
+                if (badge) badge.innerText = 'Funcionário';
+                if (painelNovo) painelNovo.classList.add('escondido');
+                if (blocoAcoes) blocoAcoes.classList.add('escondido');
+            } else {
+                if (badge) badge.innerText = 'Gestor';
+                if (painelNovo) painelNovo.classList.remove('escondido');
+                if (blocoAcoes) blocoAcoes.classList.remove('escondido');
+            }
         }
 
-
-
-        /* =========================================
-           RECIBOS
-           ========================================= */
-
-        function carregarRecibos() {
-
-            const dados =
-                localStorage.getItem(
-                    'frees_app_recibos_v9'
-                );
-
-            return dados
-                ? JSON.parse(dados)
-                : {};
-
+        function sairSistema() {
+            sessionStorage.clear();
+            location.reload();
         }
 
-
-        function salvarRecibosStorage(dados) {
-
-            localStorage.setItem(
-                'frees_app_recibos_v9',
-                JSON.stringify(dados)
-            );
-
+        function irParaInicio() {
+            if (tipoUsuario === 'funcionario') {
+                abrirUnidade(unidadeSelecionada);
+                return;
+            }
+            document.querySelectorAll('.secao').forEach(el => el.classList.remove('ativo'));
+            document.getElementById('secao-inicio').classList.add('ativo');
+            
+            document.getElementById('nav-inicio').classList.add('ativo');
+            document.getElementById('nav-historico').classList.remove('ativo');
+            montarGradeUnidades();
         }
 
+        function abrirUnidade(nome) {
+            unidadeSelecionada = nome;
+            const titulo = document.getElementById('titulo-unidade-atual');
+            if (titulo) titulo.innerText = unidadeSelecionada;
+            
+            document.querySelectorAll('.secao').forEach(el => el.classList.remove('ativo'));
+            document.getElementById('secao-operacional').classList.add('ativo');
+            
+            if (tipoUsuario === 'gestor') {
+                document.getElementById('nav-inicio').classList.remove('ativo');
+            }
+            
+            const cardGerado = document.getElementById('cartao-texto-gerado');
+            if (cardGerado) cardGerado.classList.add('escondido');
+            
+            carregarLancamentosDia();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
 
+        function irParaHistorico() {
+            if (tipoUsuario === 'funcionario') {
+                mostrarAviso('Área restrita a gestores.', 'erro');
+                return;
+            }
+            document.querySelectorAll('.secao').forEach(el => el.classList.remove('ativo'));
+            document.getElementById('secao-historico').classList.add('ativo');
+            
+            document.getElementById('nav-inicio').classList.remove('ativo');
+            document.getElementById('nav-historico').classList.add('ativo');
+            
+            carregarHistorico();
+        }
 
-        /* =========================================
-           CAMPOS DE HORÁRIO
-           ========================================= */
+        function mudarTipoTurno() {
+            const selectTipo = document.getElementById('input-tipo');
+            if (!selectTipo) return;
+            const tipo = selectTipo.value;
+            const blocoEscala = document.getElementById('bloco-escala');
+            const blocoHoras = document.getElementById('bloco-horas');
 
-        function alternarCamposHorario() {
-
-            const tipo =
-                document.getElementById(
-                    'input-tipo'
-                ).value;
-
-
-            const blocoCompleto =
-                document.getElementById(
-                    'bloco-completo'
-                );
-
-
-            const blocoHorarios =
-                document.getElementById(
-                    'bloco-horarios'
-                );
-
-
-            const labelInicio =
-                document.getElementById(
-                    'label-inicio-txt'
-                );
-
-
-            const labelSaida =
-                document.getElementById(
-                    'label-saida-txt'
-                );
-
-
-            const wrapperSaida =
-                document.getElementById(
-                    'wrapper-saida'
-                );
-
-
-            wrapperSaida.style.display =
-                'block';
-
+            if (!blocoEscala || !blocoHoras) return;
 
             if (tipo === 'completo') {
-
-                blocoCompleto.classList.remove(
-                    'hidden'
-                );
-
-                blocoHorarios.classList.add(
-                    'hidden'
-                );
-
+                blocoEscala.classList.remove('escondido');
+                blocoHoras.classList.add('escondido');
             } else {
+                blocoEscala.classList.add('escondido');
+                blocoHoras.classList.remove('escondido');
+            }
+        }
 
-                blocoCompleto.classList.add(
-                    'hidden'
-                );
+        function pegarBanco() {
+            try { return JSON.parse(localStorage.getItem('dados_app_v4')) || {}; } catch(e) { return {}; }
+        }
+        function salvarBanco(db) {
+            localStorage.setItem('dados_app_v4', JSON.stringify(db));
+        }
 
-                blocoHorarios.classList.remove(
-                    'hidden'
-                );
+        function pegarRecibos() {
+            try { return JSON.parse(localStorage.getItem('recibos_app_v4')) || {}; } catch(e) { return {}; }
+        }
+        function salvarRecibos(rec) {
+            localStorage.setItem('recibos_app_v4', JSON.stringify(rec));
+        }
 
+        function montarGradeUnidades() {
+            const db = pegarBanco();
+            const grade = document.getElementById('grade-filiais');
+            if (!grade) return;
+            grade.innerHTML = '';
 
-                if (tipo === 'extra') {
+            FILIAIS.forEach(un => {
+                const dadosUn = db[un] || {};
+                let totalGeral = 0;
+                let dias = Object.keys(dadosUn).length;
 
-                    labelInicio.innerText =
-                        'Início (Extra)';
+                Object.values(dadosUn).forEach(lista => {
+                    lista.forEach(i => totalGeral += i.valor);
+                });
 
-                    labelSaida.innerText =
-                        'Saída (Extra)';
+                const div = document.createElement('div');
+                div.className = 'cartao-unidade';
+                div.addEventListener('click', () => abrirUnidade(un));
+                div.innerHTML = `
+                    <div>
+                        <div class="pasta-icone">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+                        </div>
+                        <div class="cartao-titulo">${un}</div>
+                        <div class="cartao-sub">${dias} dia(s) com registos</div>
+                    </div>
+                    <div class="cartao-rodape">
+                        <span>Total:</span>
+                        <span class="cartao-valor">R$ ${totalGeral.toFixed(2).replace('.', ',')}</span>
+                    </div>
+                `;
+                grade.appendChild(div);
+            });
+        }
 
+        function calcularValor(tipo, escala, inicio, saida, obsExtra) {
+            if (tipo === 'completo') {
+                return { valor: 120.00, desc: `ref ao horário ${escala}` };
+            } else {
+                const h1 = parseInt(inicio) || 0;
+                const h2 = parseInt(saida) || 0;
+                let horas = h2 - h1;
+                if (horas <= 0) horas = tipo === 'extra' ? 2 : 3;
+                const preco = tipo === 'extra' ? 20.00 : 15.00;
+                const totalCalc = horas * preco;
+                
+                let descricaoFinal = '';
+                if (obsExtra && obsExtra.trim() !== '') {
+                    descricaoFinal = `ref ao ${obsExtra.trim()} das ${inicio} - ${saida}`;
                 } else {
-
-                    labelInicio.innerText =
-                        'Entrada';
-
-                    labelSaida.innerText =
-                        'Saída';
-
+                    descricaoFinal = `ref ao horário das ${inicio} - ${saida}`;
                 }
-
+                return { valor: totalCalc, desc: descricaoFinal };
             }
-
         }
 
-
-
-        /* =========================================
-           CÁLCULO
-           ========================================= */
-
-        function calcularValor(
-            tipo,
-            extraInfo,
-            inicio,
-            saida
-        ) {
-
-            if (tipo === 'completo') {
-
-                return {
-
-                    valor: 120.00,
-
-                    ref:
-                        `ref ao horário das ${extraInfo}`
-
-                };
-
-            }
-
-
-            else if (tipo === 'extra') {
-
-                const hIn =
-                    parseInt(inicio) || 0;
-
-
-                const hOut =
-                    parseInt(saida) || 0;
-
-
-                let horas =
-                    hOut - hIn;
-
-
-                if (horas <= 0) {
-
-                    horas = 2;
-
-                }
-
-
-                const valor =
-                    horas * 20.00;
-
-
-                const termoHora =
-                    horas === 1
-                        ? 'uma hora extra'
-                        : `${horas} horas extra`;
-
-
-                return {
-
-                    valor: valor,
-
-                    ref:
-                        `ref ao horário das ${inicio} até as ${saida} (${termoHora})`
-
-                };
-
-            }
-
-
-            else {
-
-                const hIn =
-                    parseInt(inicio) || 0;
-
-
-                const hOut =
-                    parseInt(saida) || 0;
-
-
-                let horas =
-                    hOut - hIn;
-
-
-                if (horas <= 0) {
-
-                    horas = 3;
-
-                }
-
-
-                const valor =
-                    horas * 15.00;
-
-
-                return {
-
-                    valor: valor,
-
-                    ref:
-                        `ref ao horário das ${inicio} - ${saida}`
-
-                };
-
-            }
-
-        }
-
-
-
-        /* =========================================
-           ADICIONAR FREE
-           ========================================= */
-
-        function adicionarFree() {
-
-            const restaurante =
-                document.getElementById(
-                    'input-restaurante'
-                ).value;
-
-
-            const data =
-                getDataSelecionada();
-
-
-            const nome =
-                document.getElementById(
-                    'input-nome'
-                ).value.trim();
-
-
-            const setor =
-                document.getElementById(
-                    'input-setor'
-                ).value;
-
-
-            const tipo =
-                document.getElementById(
-                    'input-tipo'
-                ).value;
-
-
-            const extraInfo =
-                document.getElementById(
-                    'input-turno-completo'
-                ).value;
-
-
-            const inicio =
-                document.getElementById(
-                    'input-inicio'
-                ).value;
-
-
-            const saida =
-                document.getElementById(
-                    'input-saida'
-                ).value;
-
-
+        function adicionarRegistro() {
+            if (tipoUsuario === 'funcionario') return;
+            const inputData = document.getElementById('input-data');
+            const inputNome = document.getElementById('input-nome');
+            const inputSetor = document.getElementById('input-setor');
+            const inputTipo = document.getElementById('input-tipo');
+            const inputEscala = document.getElementById('input-escala');
+            const inputInicio = document.getElementById('input-inicio');
+            const inputSaida = document.getElementById('input-saida');
+            const inputObsExtra = document.getElementById('input-obs-extra');
+
+            if (!inputData || !inputNome) return;
+
+            const data = inputData.value;
+            const nome = inputNome.value.trim();
+            const setor = inputSetor ? inputSetor.value : 'bar';
+            const tipo = inputTipo ? inputTipo.value : 'completo';
+            const escala = inputEscala ? inputEscala.value : '';
+            const inicio = inputInicio ? inputInicio.value : '';
+            const saida = inputSaida ? inputSaida.value : '';
+            const obs = inputObsExtra ? inputObsExtra.value : '';
 
             if (!nome) {
-
-                alert(
-                    'Por favor, digite o nome do funcionário.'
-                );
-
+                mostrarAviso('Digite o nome do colaborador.', 'erro');
                 return;
-
             }
 
+            const calc = calcularValor(tipo, escala, inicio, saida, obs);
+            const db = pegarBanco();
 
+            if (!db[unidadeSelecionada]) db[unidadeSelecionada] = {};
+            if (!db[unidadeSelecionada][data]) db[unidadeSelecionada][data] = [];
 
-            const calc =
-                calcularValor(
-                    tipo,
-                    extraInfo,
-                    inicio,
-                    saida
-                );
-
-
-
-            const db =
-                carregarDados();
-
-
-
-            if (!db[restaurante]) {
-
-                db[restaurante] = {};
-
+            if (itemEditando !== null) {
+                db[unidadeSelecionada][data][itemEditando] = { nome, setor, valor: calc.valor, desc: calc.desc };
+                itemEditando = null;
+                mostrarAviso('Registro atualizado.');
+            } else {
+                db[unidadeSelecionada][data].push({ nome, setor, valor: calc.valor, desc: calc.desc });
+                mostrarAviso('Adicionado com sucesso!');
             }
 
-
-
-            if (!db[restaurante][data]) {
-
-                db[restaurante][data] = [];
-
-            }
-
-
-
-            if (editandoId !== null) {
-
-                db[restaurante][data][editandoId] = {
-
-                    nome,
-                    setor,
-                    valor: calc.valor,
-                    ref: calc.ref
-
-                };
-
-
-                editandoId = null;
-
-            }
-
-
-            else {
-
-                db[restaurante][data].push({
-
-                    nome,
-                    setor,
-                    valor: calc.valor,
-                    ref: calc.ref
-
-                });
-
-            }
-
-
-
-            salvarDados(db);
-
-
-
-            document.getElementById(
-                'input-nome'
-            ).value = '';
-
-
-            document.getElementById(
-                'input-inicio'
-            ).value = '';
-
-
-            document.getElementById(
-                'input-saida'
-            ).value = '';
-
-
-            document.getElementById(
-                'input-nome'
-            ).focus();
-
+            salvarBanco(db);
+            inputNome.value = '';
+            if (inputInicio) inputInicio.value = '';
+            if (inputSaida) inputSaida.value = '';
+            if (inputObsExtra) inputObsExtra.value = '';
+            inputNome.focus();
+            carregarLancamentosDia();
         }
 
+        function carregarLancamentosDia() {
+            const inputData = document.getElementById('input-data');
+            if (!inputData) return;
+            const data = inputData.value;
+            const db = pegarBanco();
+            const lista = (db[unidadeSelecionada] && db[unidadeSelecionada][data]) || [];
+            const container = document.getElementById('lista-lancamentos');
+            if (!container) return;
+            container.innerHTML = '';
 
-
-        /* =========================================
-           ATUALIZAR TELA
-           ========================================= */
-
-        function atualizarTela() {
-
-            const restauranteAtual =
-                document.getElementById(
-                    'input-restaurante'
-                ).value;
-
-
-            document.getElementById(
-                'restaurante-ativo-label'
-            ).innerText =
-                restauranteAtual;
-
-
-
-            const data =
-                getDataSelecionada();
-
-
-            const db =
-                carregarDados();
-
-
-            const dadosRestaurante =
-                db[restauranteAtual] || {};
-
-
-            const lista =
-                dadosRestaurante[data] || [];
-
-
-            const container =
-                document.getElementById(
-                    'lista-frees'
-                );
-
-
-            container.innerHTML =
-                '';
-
-
-            let totalGeral =
-                0;
-
-
-
+            let total = 0;
             if (lista.length === 0) {
+                container.innerHTML = `<div class="vazio">Nenhum registo nesta data.</div>`;
+            }
 
-                container.innerHTML = `
-
-                    <p class="empty-msg">
-
-                        Nenhum free cadastrado nesta
-                        data para ${restauranteAtual}.
-
-                    </p>
-
+            lista.forEach((item, idx) => {
+                total += item.valor;
+                const div = document.createElement('div');
+                div.className = 'item-linha';
+                div.innerHTML = `
+                    <div class="item-info">
+                        <div class="nome">${item.nome} (${item.setor})</div>
+                        <div class="detalhe">${item.desc}</div>
+                        <div class="preco">$ ${item.valor.toFixed(2).replace('.', ',')}</div>
+                    </div>
+                    ${tipoUsuario === 'gestor' ? `
+                    <div class="acoes-item">
+                        <button onclick="editarItem(${idx})" class="botao-acao">Editar</button>
+                        <button onclick="removerItem(${idx})" class="botao-acao apagar">X</button>
+                    </div>` : ''}
                 `;
-
-            }
-
-
-
-            lista.forEach(
-                (item, index) => {
-
-                    totalGeral +=
-                        item.valor;
-
-
-                    const div =
-                        document.createElement(
-                            'div'
-                        );
-
-
-                    div.className =
-                        'item-card';
-
-
-
-                    div.innerHTML = `
-
-                        <div class="item-info">
-
-                            <p class="nome">
-
-                                ${item.nome}
-
-                                <span class="setor">
-                                    (${item.setor})
-                                </span>
-
-                            </p>
-
-
-                            <p class="valor">
-
-                                R$
-                                ${item.valor
-                                    .toFixed(2)
-                                    .replace('.', ',')}
-
-                            </p>
-
-
-                            <p class="ref">
-
-                                ${item.ref}
-
-                            </p>
-
-                        </div>
-
-
-                        <div class="item-actions">
-
-                            <button
-                                onclick="editarFree(${index})"
-                                class="action-btn"
-                                title="Editar"
-                            >
-                                ✏️
-                            </button>
-
-
-                            <button
-                                onclick="removerFree(${index})"
-                                class="action-btn delete"
-                                title="Excluir"
-                            >
-                                🗑️
-                            </button>
-
-                        </div>
-
-                    `;
-
-
-                    container.appendChild(
-                        div
-                    );
-
-                }
-            );
-
-
-
-            document.getElementById(
-                'total-geral'
-            ).innerText =
-
-                `Total: R$ ${
-                    totalGeral
-                    .toFixed(2)
-                    .replace('.', ',')
-                }`;
-
-        }
-
-
-
-        /* =========================================
-           SALVAR RECIBO
-           ========================================= */
-
-        function salvarReciboDia() {
-
-            const restaurante =
-                document.getElementById(
-                    'input-restaurante'
-                ).value;
-
-
-            const data =
-                getDataSelecionada();
-
-
-            const db =
-                carregarDados();
-
-
-
-            if (
-                !db[restaurante] ||
-                !db[restaurante][data] ||
-                db[restaurante][data].length === 0
-            ) {
-
-                alert(
-                    'Não há frees cadastrados para salvar como recibo nesta data.'
-                );
-
-                return;
-
-            }
-
-
-
-            const recibos =
-                carregarRecibos();
-
-
-
-            if (!recibos[restaurante]) {
-
-                recibos[restaurante] = {};
-
-            }
-
-
-
-            recibos[restaurante][data] =
-                [
-                    ...db[restaurante][data]
-                ];
-
-
-
-            salvarRecibosStorage(
-                recibos
-            );
-
-
-
-            alert(
-                'Recibo salvo no histórico com sucesso!'
-            );
-
-
-            mudarAba(
-                'historico'
-            );
-
-        }
-
-
-
-        /* =========================================
-           HISTÓRICO
-           ========================================= */
-
-        function atualizarHistoricoTela() {
-
-            const containerHistorico =
-                document.getElementById(
-                    'lista-historico'
-                );
-
-
-            containerHistorico.innerHTML =
-                '';
-
-
-            const restauranteFiltro =
-                document.getElementById(
-                    'filtro-restaurante-historico'
-                ).value;
-
-
-            const recibos =
-                carregarRecibos();
-
-
-            const dadosRestaurante =
-                recibos[restauranteFiltro] || {};
-
-
-            const datas =
-                Object.keys(
-                    dadosRestaurante
-                ).sort(
-                    (a, b) =>
-                        new Date(b) -
-                        new Date(a)
-                );
-
-
-
-            if (datas.length === 0) {
-
-                containerHistorico.innerHTML = `
-
-                    <p class="empty-msg">
-
-                        Nenhum recibo salvo para
-                        ${restauranteFiltro}.
-
-                    </p>
-
-                `;
-
-                return;
-
-            }
-
-
-
-            datas.forEach(
-                dataStr => {
-
-                    const itensDia =
-                        dadosRestaurante[dataStr];
-
-
-                    if (
-                        !itensDia ||
-                        itensDia.length === 0
-                    ) {
-
-                        return;
-
-                    }
-
-
-
-                    let totalDia =
-                        itensDia.reduce(
-                            (acc, curr) =>
-                                acc + curr.valor,
-                            0
-                        );
-
-
-
-                    const partes =
-                        dataStr.split('-');
-
-
-                    const dataFormatada =
-                        `${partes[2]}/${partes[1]}/${partes[0]}`;
-
-
-
-                    const div =
-                        document.createElement(
-                            'div'
-                        );
-
-
-                    div.className =
-                        'historico-card';
-
-
-
-                    div.innerHTML = `
-
-                        <div>
-
-                            <strong
-                                style="
-                                    font-size:
-                                    0.95rem;
-                                "
-                            >
-
-                                📅 Data:
-                                ${dataFormatada}
-
-                            </strong>
-
-
-                            <p
-                                style="
-                                    font-size:
-                                    0.75rem;
-
-                                    color:
-                                    var(--text-muted);
-                                "
-                            >
-
-                                ${itensDia.length}
-                                funcionário(s)
-
-                                • R$
-                                ${totalDia
-                                    .toFixed(2)
-                                    .replace('.', ',')}
-
-                            </p>
-
-                        </div>
-
-
-                        <div
-                            class="flex-row"
-                            style="
-                                width: 100%;
-                                justify-content:
-                                flex-end;
-                            "
-                        >
-
-                            <button
-                                onclick="abrirReciboDetalhado(
-                                    '${restauranteFiltro}',
-                                    '${dataStr}'
-                                )"
-                                class="action-btn"
-                                style="
-                                    background-color:
-                                    var(--primary);
-
-                                    color:
-                                    white;
-
-                                    border:
-                                    none;
-
-                                    flex:
-                                    1;
-
-                                    padding:
-                                    0.5rem;
-                                "
-                            >
-                                📄 Abrir Recibo
-                            </button>
-
-
-                            <button
-                                onclick="excluirRecibo(
-                                    '${restauranteFiltro}',
-                                    '${dataStr}'
-                                )"
-                                class="action-btn delete"
-                                style="
-                                    padding:
-                                    0.5rem 0.75rem;
-                                "
-                            >
-                                🗑️
-                            </button>
-
-                        </div>
-
-                    `;
-
-
-                    containerHistorico.appendChild(
-                        div
-                    );
-
-                }
-            );
-
-        }
-
-
-
-        /* =========================================
-           ABRIR RECIBO
-           ========================================= */
-
-        function abrirReciboDetalhado(
-            restaurante,
-            dataStr
-        ) {
-
-            const recibos =
-                carregarRecibos();
-
-
-            const itensDia =
-                recibos[restaurante] &&
-                recibos[restaurante][dataStr]
-                    ? recibos[restaurante][dataStr]
-                    : [];
-
-
-
-            const partes =
-                dataStr.split('-');
-
-
-            const dataFormatada =
-                `${partes[2]}/${partes[1]}/${partes[0]}`;
-
-
-
-            document.getElementById(
-                'modal-titulo'
-            ).innerText =
-                `Recibo - ${restaurante}`;
-
-
-            document.getElementById(
-                'modal-subtitulo'
-            ).innerText =
-                `Data do Turno: ${dataFormatada}`;
-
-
-
-            const corpoModal =
-                document.getElementById(
-                    'modal-corpo-itens'
-                );
-
-
-            corpoModal.innerHTML =
-                '';
-
-
-            let total =
-                0;
-
-
-
-            itensDia.forEach(
-                item => {
-
-                    total +=
-                        item.valor;
-
-
-                    const linha =
-                        document.createElement(
-                            'div'
-                        );
-
-
-                    linha.style.cssText = `
-
-                        background:
-                        #f8fafc;
-
-                        padding:
-                        0.625rem;
-
-                        border-radius:
-                        0.375rem;
-
-                        border:
-                        1px solid
-                        var(--border-color);
-
-                        margin-bottom:
-                        0.5rem;
-
-                        display:
-                        flex;
-
-                        justify-content:
-                        space-between;
-
-                        align-items:
-                        center;
-
-                        gap:
-                        0.5rem;
-
-                    `;
-
-
-
-                    linha.innerHTML = `
-
-                        <div>
-
-                            <strong
-                                style="
-                                    font-size:
-                                    0.85rem;
-
-                                    color:
-                                    var(--text-main);
-                                "
-                            >
-                                ${item.nome}
-                            </strong>
-
-
-                            <span
-                                style="
-                                    font-size:
-                                    0.75rem;
-
-                                    color:
-                                    var(--text-muted);
-                                "
-                            >
-                                (${item.setor})
-                            </span>
-
-
-                            <div
-                                style="
-                                    font-size:
-                                    0.7rem;
-
-                                    color:
-                                    var(--text-muted);
-
-                                    margin-top:
-                                    0.125rem;
-                                "
-                            >
-                                ${item.ref}
-                            </div>
-
-                        </div>
-
-
-                        <span
-                            style="
-                                font-weight:
-                                700;
-
-                                color:
-                                var(--primary);
-
-                                font-size:
-                                0.85rem;
-
-                                white-space:
-                                nowrap;
-                            "
-                        >
-
-                            R$
-                            ${item.valor
-                                .toFixed(2)
-                                .replace('.', ',')}
-
-                        </span>
-
-                    `;
-
-
-                    corpoModal.appendChild(
-                        linha
-                    );
-
-                }
-            );
-
-
-
-            document.getElementById(
-                'modal-total-geral'
-            ).innerText =
-
-                `R$ ${
-                    total
-                    .toFixed(2)
-                    .replace('.', ',')
-                }`;
-
-
-
-            document.getElementById(
-                'modal-recibo'
-            ).classList.remove(
-                'hidden'
-            );
-
-        }
-
-
-
-        /* =========================================
-           FECHAR MODAL
-           ========================================= */
-
-        function fecharModalRecibo() {
-
-            document.getElementById(
-                'modal-recibo'
-            ).classList.add(
-                'hidden'
-            );
-
-        }
-
-
-
-        /* =========================================
-           EXCLUIR RECIBO
-           ========================================= */
-
-        function excluirRecibo(
-            restaurante,
-            dataStr
-        ) {
-
-            if (
-                confirm(
-                    `Deseja excluir o recibo do dia ${
-                        dataStr
-                        .split('-')
-                        .reverse()
-                        .join('/')
-                    } (${restaurante})?`
-                )
-            ) {
-
-                const recibos =
-                    carregarRecibos();
-
-
-                if (recibos[restaurante]) {
-
-                    delete recibos[
-                        restaurante
-                    ][dataStr];
-
-
-                    salvarRecibosStorage(
-                        recibos
-                    );
-
-
-                    atualizarHistoricoTela();
-
-                }
-
-            }
-
-        }
-
-
-
-        /* =========================================
-           REMOVER FREE
-           ========================================= */
-
-        function removerFree(index) {
-
-            const restaurante =
-                document.getElementById(
-                    'input-restaurante'
-                ).value;
-
-
-            const data =
-                getDataSelecionada();
-
-
-            const db =
-                carregarDados();
-
-
-
-            if (
-                db[restaurante] &&
-                db[restaurante][data]
-            ) {
-
-                db[restaurante][data]
-                    .splice(index, 1);
-
-
-                salvarDados(db);
-
-            }
-
-        }
-
-
-
-        /* =========================================
-           EDITAR FREE
-           ========================================= */
-
-        function editarFree(index) {
-
-            const restaurante =
-                document.getElementById(
-                    'input-restaurante'
-                ).value;
-
-
-            const data =
-                getDataSelecionada();
-
-
-            const db =
-                carregarDados();
-
-
-            const item =
-                db[restaurante][data][index];
-
-
-
-            document.getElementById(
-                'input-nome'
-            ).value =
-                item.nome;
-
-
-            document.getElementById(
-                'input-setor'
-            ).value =
-                item.setor;
-
-
-            editandoId =
-                index;
-
-
-            window.scrollTo({
-
-                top: 0,
-
-                behavior: 'smooth'
-
+                container.appendChild(div);
             });
 
+            const txtTotal = document.getElementById('texto-total-dia');
+            if (txtTotal) txtTotal.innerText = `R$ ${total.toFixed(2).replace('.', ',')}`;
         }
 
+        function removerItem(idx) {
+            if (tipoUsuario === 'funcionario') return;
+            const inputData = document.getElementById('input-data');
+            if (!inputData) return;
+            const data = inputData.value;
+            const db = pegarBanco();
+            if (db[unidadeSelecionada] && db[unidadeSelecionada][data]) {
+                db[unidadeSelecionada][data].splice(idx, 1);
+                salvarBanco(db);
+                carregarLancamentosDia();
+                mostrarAviso('Removido.');
+            }
+        }
 
+        function editarItem(idx) {
+            if (tipoUsuario === 'funcionario') return;
+            const inputData = document.getElementById('input-data');
+            if (!inputData) return;
+            const data = inputData.value;
+            const db = pegarBanco();
+            const item = db[unidadeSelecionada][data][idx];
 
-        /* =========================================
-           LIMPAR TUDO
-           ========================================= */
+            const inputNome = document.getElementById('input-nome');
+            const inputSetor = document.getElementById('input-setor');
+            if (inputNome) inputNome.value = item.nome;
+            if (inputSetor) inputSetor.value = item.setor;
+            itemEditando = idx;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            mostrarAviso('Modo de edição ativado.');
+        }
 
-        function limparTudo() {
+        function salvarReciboOficial() {
+            if (tipoUsuario === 'funcionario') return;
+            const inputData = document.getElementById('input-data');
+            if (!inputData) return;
+            const data = inputData.value;
+            const db = pegarBanco();
 
-            if (
-                confirm(
-                    'Deseja limpar todos os frees em digitação desta data para este restaurante?'
-                )
-            ) {
-
-                const restaurante =
-                    document.getElementById(
-                        'input-restaurante'
-                    ).value;
-
-
-                const data =
-                    getDataSelecionada();
-
-
-                const db =
-                    carregarDados();
-
-
-
-                if (db[restaurante]) {
-
-                    delete db[
-                        restaurante
-                    ][data];
-
-
-                    salvarDados(db);
-
-                }
-
+            if (!db[unidadeSelecionada] || !db[unidadeSelecionada][data] || db[unidadeSelecionada][data].length === 0) {
+                mostrarAviso('Não há registos para salvar.', 'erro');
+                return;
             }
 
+            const recibos = pegarRecibos();
+            if (!recibos[unidadeSelecionada]) recibos[unidadeSelecionada] = {};
+            recibos[unidadeSelecionada][data] = [...db[unidadeSelecionada][data]];
+            salvarRecibos(recibos);
+
+            mostrarAviso('Recibo salvo com sucesso!');
+            irParaHistorico();
         }
 
+        function carregarHistorico() {
+            const filtroEl = document.getElementById('filtro-historico');
+            const filtro = filtroEl ? filtroEl.value : 'Todas';
+            const recibos = pegarRecibos();
+            const container = document.getElementById('lista-historico');
+            if (!container) return;
+            container.innerHTML = '';
 
+            let exibicao = [];
+            FILIAIS.forEach(un => {
+                if (filtro === 'Todas' || filtro === un) {
+                    const dadosUn = recibos[un] || {};
+                    Object.keys(dadosUn).forEach(dt => {
+                        exibicao.push({ unidade: un, data: dt, itens: dadosUn[dt] });
+                    });
+                }
+            });
 
-        /* =========================================
-           GERAR TEXTO
-           ========================================= */
+            exibicao.sort((a,b) => new Date(b.data) - new Date(a.data));
 
-        function gerarTexto() {
+            if (exibicao.length === 0) {
+                container.innerHTML = `<div class="vazio">Nenhum recibo salvo encontrado.</div>`;
+                return;
+            }
 
-            const restaurante =
-                document.getElementById(
-                    'input-restaurante'
-                ).value;
+            exibicao.forEach(obj => {
+                const total = obj.itens.reduce((acc, c) => acc + c.valor, 0);
+                const p = obj.data.split('-');
+                const dataFormatada = `${p[2]}/${p[1]}/${p[0]}`;
 
+                const div = document.createElement('div');
+                div.className = 'item-linha';
+                div.innerHTML = `
+                    <div class="item-info">
+                        <div class="nome">${obj.unidade} — <span style="font-weight:normal; color:var(--cor-texto-muted);">${dataFormatada}</span></div>
+                        <div class="detalhe">${obj.itens.length} profissional(is)</div>
+                        <div class="preco">$ ${total.toFixed(2).replace('.', ',')}</div>
+                    </div>
+                    <div style="display:flex; gap:0.3rem;">
+                        <button onclick="abrirDetalhesRecibo('${obj.unidade}', '${obj.data}')" class="botao-acao" style="background:rgba(56,189,248,0.1); color:var(--cor-principal); border-color:rgba(56,189,248,0.2);">Ver</button>
+                        <button onclick="apagarRecibo('${obj.unidade}', '${obj.data}')" class="botao-acao apagar">X</button>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
 
-            const data =
-                getDataSelecionada();
+        function abrirDetalhesRecibo(un, dt) {
+            const recibos = pegarRecibos();
+            if (!recibos[un] || !recibos[un][dt]) return;
+            const itens = recibos[un][dt];
+            const p = dt.split('-');
 
+            const modalTitulo = document.getElementById('modal-titulo');
+            const modalSub = document.getElementById('modal-sub');
+            if (modalTitulo) modalTitulo.innerText = `${un}`;
+            if (modalSub) modalSub.innerText = `Data: ${p[2]}/${p[1]}/${p[0]}`;
 
-            const db =
-                carregarDados();
+            const container = document.getElementById('modal-lista');
+            if (!container) return;
+            container.innerHTML = '';
+            let total = 0;
 
+            itens.forEach(i => {
+                total += i.valor;
+                const d = document.createElement('div');
+                d.className = 'item-linha';
+                d.innerHTML = `
+                    <div class="item-info">
+                        <div class="nome">${i.nome} (${i.setor})</div>
+                        <div class="detalhe">${i.desc}</div>
+                    </div>
+                    <div style="font-weight:700; color:var(--cor-principal); font-size:0.85rem;">$ ${i.valor.toFixed(2).replace('.', ',')}</div>
+                `;
+                container.appendChild(d);
+            });
 
-            const lista =
-                db[restaurante] &&
-                db[restaurante][data]
-                    ? db[restaurante][data]
-                    : [];
+            const modalTotal = document.getElementById('modal-total');
+            if (modalTotal) modalTotal.innerText = `$ ${total.toFixed(2).replace('.', ',')}`;
+            const janelaDetalhes = document.getElementById('janela-detalhes');
+            if (janelaDetalhes) janelaDetalhes.classList.remove('escondido');
+        }
 
+        function fecharJanela() {
+            const janelaDetalhes = document.getElementById('janela-detalhes');
+            if (janelaDetalhes) janelaDetalhes.classList.add('escondido');
+        }
 
+        function apagarRecibo(un, dt) {
+            if (confirm('Deseja excluir este recibo?')) {
+                const recibos = pegarRecibos();
+                if (recibos[un]) {
+                    delete recibos[un][dt];
+                    salvarRecibos(recibos);
+                    carregarHistorico();
+                    mostrarAviso('Recibo excluído.');
+                }
+            }
+        }
+
+        function criarTextoRelatorio() {
+            const inputData = document.getElementById('input-data');
+            if (!inputData) return;
+            const data = inputData.value;
+            const db = pegarBanco();
+            const lista = (db[unidadeSelecionada] && db[unidadeSelecionada][data]) || [];
 
             if (lista.length === 0) {
-
-                alert(
-                    'Não há frees cadastrados para gerar texto.'
-                );
-
+                mostrarAviso('Sem dados para gerar o texto.', 'erro');
                 return;
-
             }
 
+            const p = data.split('-');
+            let texto = `Free ${p[2]}/${p[1]} pagos\n\n`;
+            lista.forEach(i => {
+                texto += `${i.nome}(${i.setor}) $ ${i.valor.toFixed(2).replace('.', ',')} / ${i.desc}\n\n`;
+            });
 
-
-            const partesData =
-                data.split('-');
-
-
-            const dataFormatada =
-                `${partesData[2]}/${partesData[1]}`;
-
-
-
-            let texto =
-                `Free ${dataFormatada} - ${restaurante} pagos\n\n`;
-
-
-
-            lista.forEach(
-                item => {
-
-                    const setorMinusculo =
-                        item.setor.toLowerCase();
-
-
-                    const valorFormatado =
-                        `R$ ${
-                            item.valor
-                            .toFixed(2)
-                            .replace('.', ',')
-                        }`;
-
-
-                    texto +=
-                        `${item.nome}(${setorMinusculo}) ${valorFormatado} / ${item.ref}\n\n`;
-
-                }
-            );
-
-
-
-            document.getElementById(
-                'secao-texto'
-            ).classList.remove(
-                'hidden'
-            );
-
-
-            document.getElementById(
-                'texto-gerado'
-            ).value =
-                texto.trim();
-
+            const txtSaida = document.getElementById('texto-saida');
+            if (txtSaida) txtSaida.value = texto.trim();
+            const cardGerado = document.getElementById('cartao-texto-gerado');
+            if (cardGerado) cardGerado.classList.remove('escondido');
+            mostrarAviso('Texto gerado no padrão correto!');
         }
-
-
-
-        /* =========================================
-           COPIAR TEXTO
-           ========================================= */
 
         function copiarTexto() {
-
-            const textarea =
-                document.getElementById(
-                    'texto-gerado'
-                );
-
-
-            textarea.select();
-
-
-
-            if (
-                navigator.clipboard &&
-                navigator.clipboard.writeText
-            ) {
-
-                navigator.clipboard.writeText(
-                    textarea.value
-                ).then(() => {
-
-                    alert(
-                        'Texto copiado para a área de transferência!'
-                    );
-
-                });
-
-            } else {
-
-                document.execCommand(
-                    'copy'
-                );
-
-                alert(
-                    'Texto copiado!'
-                );
-
-            }
-
+            const txt = document.getElementById('texto-saida');
+            if (!txt) return;
+            txt.select();
+            navigator.clipboard.writeText(txt.value).then(() => {
+                mostrarAviso('Texto copiado!');
+            });
         }
-
-
-
-        /* =========================================
-           EVENTOS
-           ========================================= */
-
-        document.getElementById(
-            'input-data'
-        ).addEventListener(
-            'change',
-            atualizarTela
-        );
-
-
-
-        /* =========================================
-           INICIALIZAÇÃO
-           ========================================= */
-
-        atualizarTela();
-
-        alternarCamposHorario();
-
     </script>
-
 </body>
 </html>
